@@ -13,7 +13,7 @@ A aplicação é desenvolvida utilizando a biblioteca ReactJS e seu banco de dad
 
 # Desenvolvedores
 ## Gustavo Marques de Mello
-<i class="devicon-github-original"></i>
+<img height="32" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" />
 [@GustavoMelloGit](https://github.com/GustavoMelloGit)
 <br/>
 <i class="devicon-linkedin-plain"></i>
