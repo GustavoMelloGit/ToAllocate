@@ -20,3 +20,8 @@ A aplicação é desenvolvida utilizando a biblioteca ReactJS e seu banco de dad
 <img height="18" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg" /> [Gustavo Mello](https://www.linkedin.com/in/gustavo-marques-mello/)
 
 ## Caio Felício
+
+<img height="18" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" /> [@caiofelicio](https://github.com/caiofelicio)
+<br/>
+
+<img height="18" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg" /> [Caio Felício](https://www.linkedin.com/in/caio-felicio/)
