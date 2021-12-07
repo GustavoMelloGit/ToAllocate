@@ -13,13 +13,8 @@ A aplicação é desenvolvida utilizando a biblioteca ReactJS e seu banco de dad
 
 # Desenvolvedores
 ## Gustavo Marques de Mello
-<<<<<<< HEAD
 
 <img height="18" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" /> [@GustavoMelloGit](https://github.com/GustavoMelloGit)
-=======
-<img height="32" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" />
-[@GustavoMelloGit](https://github.com/GustavoMelloGit)
->>>>>>> d743829e576f5891e6e0d431432d4b93597fe791
 <br/>
 
 <img height="18" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg" /> [Gustavo Mello](https://www.linkedin.com/in/gustavo-marques-mello/)
