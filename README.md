@@ -7,7 +7,7 @@ Projeto criado para realização do Trabalho Prático na disciplica Banco de Dad
 ## Sobre o projeto
 <strong>ToAllocate</strong> é um sistema web programado para organizar e mapear projetos de uma empresa de desenvolvimento, onde é possível visualizar responsáveis por projetos, criar novos projetos e atribuir responsáveis para os mesmos.
 ## Desenvolvimento
-A aplicação é desenvolvida utilizando a biblioteca ReactJS e seu banco de dados utilizando a linguagem SQL.
+A aplicação é desenvolvida utilizando a biblioteca ReactJS estilização com Styled Components e seu banco de dados utilizando a linguagem SQL.
 <br/>
 <br/>
 
