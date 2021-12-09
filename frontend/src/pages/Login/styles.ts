@@ -29,6 +29,12 @@ export const RedBox = styled.div`
   h1 {
     color: ${theme.colors.primary};
   }
+
+  @media (max-width: ${theme.screenSizes.xs}) {
+    h1 {
+      font-size: 10rem;
+    }
+  }
   @media (max-width: ${theme.screenSizes.md}) {
     width: 100%;
     h1 {

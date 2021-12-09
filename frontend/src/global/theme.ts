@@ -21,7 +21,7 @@ const theme = {
     xxl: '2.4rem',
   },
   screenSizes: {
-    xs: '0px',
+    xs: '375px',
     sm: '576px',
     md: '768px',
     lg: '992px',
