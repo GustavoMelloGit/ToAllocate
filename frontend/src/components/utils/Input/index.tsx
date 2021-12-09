@@ -1,8 +1,18 @@
-import React, { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 import { Input } from './styles';
 
-interface IInputComponent extends InputHTMLAttributes<HTMLInputElement> {}
+interface IInputComponent extends InputHTMLAttributes<HTMLInputElement> {
+  value: string;
+  onChangeText: (text: string) => void;
+}
+
 export default function InputComponent(props: IInputComponent) {
-  const { ...rest } = props;
-  return <Input {...rest} />;
+  const { value, onChangeText, ...rest } = props;
+  return (
+    <Input
+      {...rest}
+      onChange={(e) => onChangeText(e.currentTarget.value)}
+      value={value}
+    />
+  );
 }
