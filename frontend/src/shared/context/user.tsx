@@ -1,6 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import { ILoginAuthenticationForm } from '../../models/authentication/form';
+import { userSignIn } from '../../models/authentication/signin';
 import { IEmployeeModel } from '../../models/user/employee';
+import api from '../../services/api';
 
 interface IAuthContext {
   user: IEmployeeModel | undefined;
@@ -20,8 +22,6 @@ interface AuthState {
 
 export const userContext = createContext<IAuthContext>({} as IAuthContext);
 
-const BASE_URL: string = process.env.REACT_APP_BASE_URL as string;
-
 const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
   const [isAuthenticated, setisAuthenticated] = useState(false);
@@ -31,14 +31,14 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
     callback: VoidFunction
   ) {
     try {
-      const response = await fetch(`${BASE_URL}/funcionarios`);
-      const data: IEmployeeModel[] = await response.json();
-      const employeeEmail = data.find((user) => user.email === entry.email);
+      const response = api.post('/login', entry);
+      console.log(response);
+      const data: userSignIn = (await response).data;
 
-      if (employeeEmail && employeeEmail.password === entry.password) {
+      if (data) {
         setData({
-          user: employeeEmail,
-          token: 'token',
+          user: data.user,
+          token: data.token,
         });
         setisAuthenticated(true);
         callback();
@@ -64,13 +64,4 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
   );
 };
 
-function useAuth() {
-  const context = useContext(userContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within a UserProvider');
-  }
-  return context;
-}
-
-export { useAuth };
 export default UserContextProvider;
