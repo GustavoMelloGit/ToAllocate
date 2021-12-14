@@ -1,4 +1,5 @@
 import React from 'react';
+import HeaderComponent from '../Header';
 import { Container } from './styles';
 
 interface IAppLayoutComponent {
@@ -7,5 +8,10 @@ interface IAppLayoutComponent {
 export default function AppLayoutComponent(props: IAppLayoutComponent) {
   const { children } = props;
 
-  return <Container>{children}</Container>;
+  return (
+    <Container>
+      <HeaderComponent title='Projetos' />
+      {children}
+    </Container>
+  );
 }
