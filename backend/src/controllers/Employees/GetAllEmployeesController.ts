@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import GetAllEmployeesService from "../services/GetAllEmployeesService";
+import GetAllEmployeesService from "../../services/Employees/GetAllEmployeesService";
 
 class GetAllEmployeesController {
   async handle(request: Request, response: Response) {

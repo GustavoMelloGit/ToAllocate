@@ -12,7 +12,9 @@ export async function isAdminMiddleware(
     `SELECT isAdmin FROM employee WHERE id = '${employee_id}'`
   );
 
-  if (!isAdmin.rows[0].isAdmin) {
+  console.log(isAdmin.rows);
+
+  if (!isAdmin) {
     return response
       .status(401)
       .json({ message: "This action require admin privilege" });

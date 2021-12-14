@@ -1,7 +1,8 @@
 import { Router } from "express";
 import AuthController from "./controllers/AuthController";
-import CreateEmployeeController from "./controllers/CreateEmployeeController";
-import GetAllEmployeesController from "./controllers/GetAllEmployeesController";
+import CreateEmployeeController from "./controllers/Employees/CreateEmployeeController";
+import DeleteEmployeeController from "./controllers/Employees/DeleteEmployeeController";
+import GetAllEmployeesController from "./controllers/Employees/GetAllEmployeesController";
 import { isAuthenticated } from "./middlewares/authMiddleware";
 import { isAdminMiddleware } from "./middlewares/isAdminMiddleware";
 import { populateDb } from "./utils/populateDb";
@@ -9,6 +10,7 @@ import { populateDb } from "./utils/populateDb";
 const authController = new AuthController();
 const getAllEmployeesController = new GetAllEmployeesController();
 const createEmployeeController = new CreateEmployeeController();
+const deleteEmployeeController = new DeleteEmployeeController();
 
 const routes = Router();
 
@@ -34,6 +36,11 @@ routes.post("/populate/:num", populateDb);
 
 routes.get("/employees", isAuthenticated, getAllEmployeesController.handle);
 
-routes.delete("delete-employee/:id");
+routes.delete(
+  "/delete-employee/:id",
+  isAuthenticated,
+  isAdminMiddleware,
+  deleteEmployeeController.handle
+);
 
 export { routes };

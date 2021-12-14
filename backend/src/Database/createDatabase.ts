@@ -1,3 +1,5 @@
+import { hashSync } from "bcryptjs";
+import { v4 } from "uuid";
 import { cursor } from "../utils/cursor";
 
 async function createDatabase() {
@@ -12,6 +14,7 @@ async function createDatabase() {
             password varchar(64) NOT NULL, 
             created_at DATE DEFAULT CURRENT_DATE,
             updated_at DATE DEFAULT CURRENT_DATE
+
         );
     `);
 
@@ -43,8 +46,29 @@ async function createDatabase() {
         CREATE TABLE IF NOT EXISTS token (
             employee_id uuid NOT NULL,
             token VARCHAR(300),
-            FOREIGN KEY (employee_id) REFERENCES employee(id)
+            FOREIGN KEY (employee_id) REFERENCES employee(id) ON DELETE CASCADE ON UPDATE CASCADE
         )
+  `);
+
+  // insere um usuario e admin e ignora se ja existe
+  await cursor.query(`
+        INSERT INTO employee (
+            id,
+            Fname,
+            Lname,
+            isAdmin,
+            role,
+            email,
+            password        
+        ) VALUES (
+            '${v4()}',
+            'Admin',
+            'Admin',
+            true,
+            'manager',
+            'admin@email.com',
+            '${hashSync("admin", 10)}'
+        ) ON CONFLICT DO NOTHING; 
   `);
 }
 

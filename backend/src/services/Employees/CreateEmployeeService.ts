@@ -1,6 +1,6 @@
 import { hash } from "bcryptjs";
 import { v4 } from "uuid";
-import { cursor } from "../utils/cursor";
+import { cursor } from "../../utils/cursor";
 
 interface IEmployeeRequest {
   Fname: string;

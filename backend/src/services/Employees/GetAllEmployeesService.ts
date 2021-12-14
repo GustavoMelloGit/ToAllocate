@@ -1,4 +1,4 @@
-import { cursor } from "../utils/cursor";
+import { cursor } from "../../utils/cursor";
 
 class GetAllEmployeesService {
   async execute() {
