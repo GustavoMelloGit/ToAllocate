@@ -10,9 +10,10 @@ export default function AppRoutes(): JSX.Element {
       <Route
         path='/home'
         element={
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
+          // <ProtectedRoute>
+          //   <HomePage />
+          // </ProtectedRoute>
+          <HomePage />
         }
       />
     </Routes>

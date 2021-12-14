@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import theme from '../../../global/theme';
 
 export const HeaderContainer = styled.header`
+  max-width: 100vw;
   height: 20vh;
   min-height: 170px;
   display: flex;
