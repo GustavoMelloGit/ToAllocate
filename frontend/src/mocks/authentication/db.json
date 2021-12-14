@@ -1,0 +1,43 @@
+{
+    "funcionarios":[
+        {
+            "id": 1,
+            "fname": "Gustavo",
+            "lname": "Marques",
+            "email": "test@test.com",
+            "password": "password",
+            "created_at": "2020-01-01 00:00:00",
+            "updated_at": "2020-01-01 00:00:05"
+        },
+        {
+            "id": 2,
+            "fname": "Gustavo",
+            "lname": "Marques",
+            "email": "test2@test.com",
+            "password": "password",
+            "created_at": "2020-01-01 00:00:00",
+            "updated_at": "2020-01-01 00:00:05"
+        },
+        {
+            "id": 3,
+            "fname": "Gustavo",
+            "lname": "Marques",
+            "email": "test3@test.com",
+            "password": "password",
+            "created_at": "2020-01-01 00:00:00",
+            "updated_at": "2020-01-01 00:00:05"
+        }
+    ],
+    "desenvolvedor": [
+        {
+            "employee_id": 1,
+            "role": "desenvolvedor",
+            "supervisor": 3
+        }
+    ],
+    "PO": [
+        {
+            "employee_id": 2
+        }
+    ]
+}
