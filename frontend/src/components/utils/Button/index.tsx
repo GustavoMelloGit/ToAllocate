@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from 'react';
 import { Button } from './styles';
 
 interface IButtonComponent extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: string;
+  children: JSX.Element;
   filled?: boolean;
 }
 export default function ButtonComponent(props: IButtonComponent) {

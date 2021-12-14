@@ -7,4 +7,5 @@ type ButtonStyleProps = {
 export const Button = styled.button<ButtonStyleProps>`
   background-color: ${(props) =>
     props.filled ? theme.colors.accent : theme.colors.primary};
+  border: none;
 `;

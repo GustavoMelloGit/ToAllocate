@@ -19,6 +19,7 @@ const theme = {
     lg: '1.8rem',
     xl: '2rem',
     xxl: '2.4rem',
+    headerTitle: '20em',
   },
   screenSizes: {
     xs: '375px',
