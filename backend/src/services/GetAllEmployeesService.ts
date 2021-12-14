@@ -6,6 +6,10 @@ class GetAllEmployeesService {
 
     if (employees.rowCount < 1) return [];
 
+    employees.rows.forEach((row) => {
+      delete row.password;
+    });
+
     return employees.rows;
   }
 }

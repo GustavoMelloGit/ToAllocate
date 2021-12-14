@@ -12,11 +12,14 @@ export function isAuthenticated(
 ) {
   const authToken = request.headers.authorization;
 
-  if (!authToken) return response.status(401).end();
+  if (!authToken)
+    return response
+      .status(401)
+      .json({ message: "This action require access token" });
 
   const [, token] = authToken.split(" ");
 
-  const { sub } = verify(token, "trabalhobd") as IPayload;
+  const { sub } = verify(token, String(process.env.SECRET)) as IPayload;
 
   if (!sub) return response.status(403).json({ error: "token expirado" });
 

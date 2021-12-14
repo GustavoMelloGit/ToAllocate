@@ -26,11 +26,15 @@ class AuthService {
         Lname: fields.lname,
         role: fields.role,
       },
-      "trabalhobd",
+      String(process.env.SECRET),
       {
         subject: fields.id,
-        expiresIn: "1d",
+        expiresIn: "1h",
       }
+    );
+
+    await cursor.query(
+      `INSERT INTO token (employee_id, token) VALUES ('${fields.id}', '${token}')`
     );
 
     return token;

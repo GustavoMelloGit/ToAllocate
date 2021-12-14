@@ -1,4 +1,4 @@
-import { cursor } from "./utils/cursor";
+import { cursor } from "../utils/cursor";
 
 async function createDatabase() {
   await cursor.query(`
@@ -6,11 +6,12 @@ async function createDatabase() {
             id uuid PRIMARY KEY,
             Fname varchar(255) NOT NULL,
             Lname varchar(255) NOT NULL,
+            isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
             role varchar(255) NOT NULL,
             email varchar(255) NOT NULL UNIQUE,
             password varchar(64) NOT NULL, 
-            created_at TIMESTAMP DEFAULT NOW(),
-            updated_at TIMESTAMP DEFAULT NOW()
+            created_at DATE DEFAULT CURRENT_DATE,
+            updated_at DATE DEFAULT CURRENT_DATE
         );
     `);
 
@@ -18,13 +19,13 @@ async function createDatabase() {
         CREATE TABLE IF NOT EXISTS project (
             project_id uuid PRIMARY KEY,
             name varchar(255) NOT NULL UNIQUE,
-            start_date TIMESTAMP NOT NULL,
-            end_date TIMESTAMP NOT NULL,
+            start_date DATE NOT NULL,
+            end_date DATE NOT NULL,
             cost FLOAT NOT NULL,
             description varchar(500) NOT NULL,
             manager uuid NOT NULL,
-            created_at TIMESTAMP DEFAULT NOW(),
-            updated_at TIMESTAMP DEFAULT NOW(),
+            created_at DATE DEFAULT CURRENT_DATE,
+            updated_at DATE DEFAULT CURRENT_DATE,
             FOREIGN KEY (manager) REFERENCES employee(id)
         )
     `);
@@ -37,6 +38,14 @@ async function createDatabase() {
             FOREIGN KEY (project_id) REFERENCES project(project_id)
         )
     `);
+
+  await cursor.query(`
+        CREATE TABLE IF NOT EXISTS token (
+            employee_id uuid NOT NULL,
+            token VARCHAR(300),
+            FOREIGN KEY (employee_id) REFERENCES employee(id)
+        )
+  `);
 }
 
-export { createDatabase };
+createDatabase();

@@ -1,7 +1,17 @@
 import axios from "axios";
 import { hash } from "bcryptjs";
+import { Request, Response } from "express";
 import { v4 } from "uuid";
 import { cursor } from "./cursor";
+
+interface IEmployee {
+  id: string;
+  Fname: string;
+  Lname: string;
+  role: string;
+  email: string;
+  password: string;
+}
 
 function randomNumber(min: number, max: number) {
   min = Math.ceil(min);
@@ -9,18 +19,19 @@ function randomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function populateDb() {
+export async function populateDb(request: Request, response: Response) {
   const roles = ["developer", "manager"];
+  const { num } = request.params;
 
   axios
-    .get("https://randomuser.me/api/?results=1")
-    .then((response) => {
-      const user = JSON.parse(JSON.stringify(response.data.results));
+    .get(`https://randomuser.me/api/?results=${num}`)
+    .then((res) => {
+      const users = JSON.parse(JSON.stringify(res.data.results));
 
-      user.forEach(async (key: any) => {
+      users.forEach(async (key: any) => {
         const password = randomNumber(10000000, 99999999).toString();
 
-        const newUser = {
+        const newUser: IEmployee = {
           id: v4(),
           Fname: key.name.first,
           Lname: key.name.last,
@@ -49,6 +60,10 @@ export function populateDb() {
       });
     })
     .catch((error) => {
-      console.log(error);
+      throw new Error(error);
     });
+
+  const { rows } = await cursor.query("SELECT * FROM employee");
+
+  return response.status(201).json({ employees: rows });
 }
