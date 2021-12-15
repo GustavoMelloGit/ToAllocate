@@ -1,6 +1,6 @@
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
-import { cursor } from "../utils/cursor";
+import { cursor } from "../../utils/cursor";
 
 interface IEmployeeRequest {
   email: string;

@@ -1,6 +1,7 @@
 import { hash } from "bcryptjs";
 import { v4 } from "uuid";
-import { cursor } from "../../utils/cursor";
+import AppError from "../../../shared/errors/AppError";
+import { cursor } from "../../../utils/cursor";
 
 interface IEmployeeRequest {
   Fname: string;
@@ -40,7 +41,8 @@ class CreateEmployeeService {
     const hashPass = await hash(password, 10);
     const id = v4();
 
-    await cursor.query(`
+    try {
+      const { rows } = await cursor.query(`
         INSERT INTO employee (
           id,
           Fname,
@@ -57,17 +59,13 @@ class CreateEmployeeService {
           '${role}',
           '${email}',
           '${hashPass}'
-        )
+        ) RETURNING id, Fname, Lname, isAdmin, role, email
       `);
 
-    return {
-      id,
-      Fname,
-      Lname,
-      isadmin,
-      role,
-      email,
-    };
+      return rows[0];
+    } catch (error) {
+      throw new AppError("Error during creating employee");
+    }
   }
 }
 

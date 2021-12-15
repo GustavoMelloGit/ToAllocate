@@ -6,9 +6,11 @@ class DeleteEmployeeController {
     const deleteEmployeeService = new DeleteEmployeeService();
     const { id } = request.params;
 
-    await deleteEmployeeService.execute(id);
+    const employee = await deleteEmployeeService.execute(id);
 
-    return response.status(204).json({ message: "User has been deleted" });
+    return response.status(200).json({
+      message: `User ${employee.fname} ${employee.lname} has been deleted`,
+    });
   }
 }
 

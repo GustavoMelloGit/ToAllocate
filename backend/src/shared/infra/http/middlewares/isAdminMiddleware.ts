@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { cursor } from "../utils/cursor";
+import { cursor } from "../../../../utils/cursor";
 
 export async function isAdminMiddleware(
   request: Request,
@@ -11,8 +11,6 @@ export async function isAdminMiddleware(
   const isAdmin = await cursor.query(
     `SELECT isAdmin FROM employee WHERE id = '${employee_id}'`
   );
-
-  console.log(isAdmin.rows);
 
   if (!isAdmin) {
     return response

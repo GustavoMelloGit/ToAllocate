@@ -19,10 +19,15 @@ export function isAuthenticated(
 
   const [, token] = authToken.split(" ");
 
-  const { sub } = verify(token, String(process.env.SECRET)) as IPayload;
+  try {
+    const { sub } = verify(token, String(process.env.SECRET)) as IPayload;
 
-  if (!sub) return response.status(403).json({ error: "token expirado" });
+    if (!sub) return response.status(403).json({ error: "Token expired" });
 
-  request.employee_id = sub;
-  return next();
+    request.employee_id = sub;
+
+    return next();
+  } catch (error) {
+    return response.status(403).json({ error: "Token expired" });
+  }
 }

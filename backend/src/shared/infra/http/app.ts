@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import { Client } from "pg";
-import { routes } from "./routes";
-import { client } from "./utils/client";
+import { client } from "../../../utils/client";
+import { routes } from "./Routes/routes";
 
 dotenv.config();
 

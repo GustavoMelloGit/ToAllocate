@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import "express-async-errors";
 import "reflect-metadata";
+import "../database/createDatabase";
 import { app } from "./app";
-import "./Database/createDatabase";
 
 dotenv.config();
 
