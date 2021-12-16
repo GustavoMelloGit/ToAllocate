@@ -4,4 +4,5 @@ export interface IEmployeeModel {
   lname: string;
   email: string;
   role: string;
+  avatar?: string;
 }

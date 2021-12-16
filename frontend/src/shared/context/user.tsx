@@ -31,8 +31,8 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
     callback: VoidFunction
   ) {
     try {
-      const response = api.post('/login', entry);
-      console.log(response);
+      const response = api.post('login', entry);
+      console.log(await response);
       const data: userSignIn = (await response).data;
 
       if (data) {

@@ -9,7 +9,6 @@ export const ContentWrapper = styled.div`
 
 export const CarouselWrapper = styled.div`
   width: 80%;
-
   .carousel-container {
     display: flex;
     align-items: center;

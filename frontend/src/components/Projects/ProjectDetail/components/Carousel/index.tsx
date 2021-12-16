@@ -1,7 +1,8 @@
 import React from 'react';
-import { Carousel } from 'primereact/carousel';
+import { Carousel, CarouselResponsiveOptions } from 'primereact/carousel';
 import { CarouselWrapper, ContentWrapper } from './styles';
 import { IProjectModel } from '../../../../../models/project/ProjectModel';
+import Breakpoints from '../../../../../shared/constants/Breakpoints';
 
 const ItemTemplate: React.FC<any> = (props) => {
   return (
@@ -18,6 +19,19 @@ interface ICarouselComponent {
 export default function CarouselComponent({
   projects,
 }: ICarouselComponent): JSX.Element {
+  const responsiveOptions: CarouselResponsiveOptions[] = [
+    {
+      breakpoint: `${Breakpoints.xl}px`,
+      numVisible: 2,
+      numScroll: 1,
+    },
+    {
+      breakpoint: `${Breakpoints.md}px`,
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ];
+
   return (
     <CarouselWrapper>
       <Carousel
@@ -28,6 +42,7 @@ export default function CarouselComponent({
         orientation='horizontal'
         indicatorsContentClassName='indicators'
         containerClassName='carousel-container'
+        responsiveOptions={responsiveOptions}
       />
     </CarouselWrapper>
   );
