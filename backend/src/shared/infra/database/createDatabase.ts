@@ -83,7 +83,7 @@ async function createDatabase() {
       'Admin',
       true,
       'manager',
-      'admin@email.com',
+      'admin@admin.com',
       '${hashSync('admin_password', 10)}'
   ) ON CONFLICT DO NOTHING; 
 `);

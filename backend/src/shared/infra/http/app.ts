@@ -1,8 +1,9 @@
-import dotenv from "dotenv";
-import express, { NextFunction, Request, Response } from "express";
-import { Client } from "pg";
-import { client } from "../../../utils/client";
-import { routes } from "./Routes/routes";
+import dotenv from 'dotenv';
+import express, { NextFunction, Request, Response } from 'express';
+import { Client } from 'pg';
+import { client } from '../../../utils/client';
+import { routes } from './Routes/routes';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -10,6 +11,8 @@ const cl = new Client(client);
 cl.connect();
 
 const app = express();
+app.use(cors());
+
 app.use(express.json());
 app.use(routes);
 app.use(
@@ -19,8 +22,8 @@ app.use(
     }
 
     return response.status(500).json({
-      status: "error",
-      message: "Internal Server Error",
+      status: 'error',
+      message: 'Internal Server Error',
     });
   }
 );

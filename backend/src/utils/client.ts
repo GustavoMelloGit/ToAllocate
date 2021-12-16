@@ -1,9 +1,9 @@
 const client = {
-  host: "localhost",
+  host: 'localhost',
   port: 5432,
-  user: "postgres",
-  password: "1234",
-  database: "toAllocate",
+  user: 'postgres',
+  password: 'password',
+  database: 'toallocate',
 };
 
 export { client };
