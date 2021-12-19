@@ -1,9 +1,6 @@
 import { Request, Response, Router } from "express";
 import AuthController from "../../../../modules/controllers/AuthController";
-import { dropTables } from "../../../../utils/drop";
 import { populateDb } from "../../../../utils/populateDb";
-import { isAuthenticated } from "../middlewares/authMiddleware";
-import { isAdminMiddleware } from "../middlewares/isAdminMiddleware";
 import EmployeeRoutes from "./Employee.Routes";
 import ProjectRoutes from "./Project.Routes";
 
@@ -23,9 +20,6 @@ routes.get("/", (request: Request, response: Response) => {
 });
 
 routes.post("/login", authController.handle);
-
-// test route
-routes.get("/drop", isAuthenticated, isAdminMiddleware, dropTables);
 
 // test route
 routes.post("/populate/:num", populateDb);
