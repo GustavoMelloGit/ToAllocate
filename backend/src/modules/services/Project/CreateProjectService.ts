@@ -4,7 +4,7 @@ import { cursor } from "../../../utils/cursor";
 import { convert, diffBetweenDates, validateData } from "../../../utils/date";
 
 interface IProjectRequest {
-  name: string;
+  project_name: string;
   start_date: string;
   end_date: string;
   cost: Number;
@@ -14,21 +14,23 @@ interface IProjectRequest {
 
 class CreateProjectService {
   async execute({
-    name,
+    project_name,
     start_date,
     end_date,
     cost,
     description,
     manager,
   }: IProjectRequest) {
-    if (!name) throw new AppError("Project name is required");
+    if (!project_name) throw new AppError("Project name is required");
 
     const projectAlreadyExists = await cursor.query(
-      `SELECT * FROM project WHERE name = '${name}'`
+      `SELECT * FROM project WHERE project_name = '${project_name}'`
     );
 
     if (projectAlreadyExists.rowCount > 0)
-      throw new AppError("There is already a project with this name");
+      throw new AppError(
+        `There is already a project with the name ${project_name}`
+      );
 
     const start_date_converted = convert(start_date);
     const end_date_converted = convert(end_date);
@@ -59,7 +61,7 @@ class CreateProjectService {
       const { rows } = await cursor.query(`
       INSERT INTO project (
         project_id,
-        name,
+        project_name,
         start_date,
         end_date,
         cost,
@@ -67,7 +69,7 @@ class CreateProjectService {
         manager
       ) VALUES (
         '${project_id}',
-        '${name}',
+        '${project_name}',
         '${start_date}',
         '${end_date}',
         '${cost}',

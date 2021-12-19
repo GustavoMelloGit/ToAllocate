@@ -3,13 +3,13 @@ import CreateProjectService from "../../services/Project/CreateProjectService";
 
 class CreateProjectController {
   async handle(request: Request, response: Response) {
-    const { name, start_date, end_date, cost, description, manager } =
+    const { project_name, start_date, end_date, cost, description, manager } =
       request.body;
 
     const createProjectService = new CreateProjectService();
 
     const project = await createProjectService.execute({
-      name,
+      project_name,
       start_date,
       end_date,
       cost,

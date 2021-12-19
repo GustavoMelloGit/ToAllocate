@@ -1,7 +1,7 @@
-import { hashSync } from 'bcryptjs';
-import { v4 } from 'uuid';
-import { cursor } from '../../../utils/cursor';
-import AppError from '../../errors/AppError';
+import { hashSync } from "bcryptjs";
+import { v4 } from "uuid";
+import { cursor } from "../../../utils/cursor";
+import AppError from "../../errors/AppError";
 
 async function createDatabase() {
   try {
@@ -19,26 +19,26 @@ async function createDatabase() {
   );
 `);
   } catch (error) {
-    throw new AppError('Error during create table employee');
+    console.log(error);
+    throw new AppError("Error during create table employee");
   }
 
   try {
     await cursor.query(`
         CREATE TABLE IF NOT EXISTS project (
             project_id uuid PRIMARY KEY,
-            name varchar(255) NOT NULL UNIQUE,
+            project_name varchar(255) NOT NULL UNIQUE,
             start_date DATE NOT NULL,
             end_date DATE NOT NULL,
             cost FLOAT NOT NULL,
             description varchar(500) NOT NULL,
             manager uuid NOT NULL,
             created_at DATE DEFAULT CURRENT_DATE,
-            updated_at DATE DEFAULT CURRENT_DATE,
-            FOREIGN KEY (manager) REFERENCES employee(id) 
+            updated_at DATE DEFAULT CURRENT_DATE
         )
     `);
   } catch (error) {
-    throw new AppError('Error during create table project');
+    throw new AppError("Error during create table project");
   }
 
   try {
@@ -51,7 +51,7 @@ async function createDatabase() {
         )
     `);
   } catch (error) {
-    throw new AppError('Error during create table works_on');
+    throw new AppError("Error during create table works_on");
   }
 
   try {
@@ -63,7 +63,7 @@ async function createDatabase() {
         )
   `);
   } catch (error) {
-    throw new AppError('Error during create table token');
+    throw new AppError("Error during create table token");
   }
 
   try {
@@ -84,11 +84,11 @@ async function createDatabase() {
       true,
       'manager',
       'admin@admin.com',
-      '${hashSync('admin_password', 10)}'
+      '${hashSync("admin_password", 10)}'
   ) ON CONFLICT DO NOTHING; 
 `);
   } catch (error) {
-    throw new AppError('Error during create admin user');
+    throw new AppError("Error during create admin user");
   }
 }
 
