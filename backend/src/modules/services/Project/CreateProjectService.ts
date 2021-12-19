@@ -55,6 +55,13 @@ class CreateProjectService {
 
     if (!manager) throw new AppError("Manager is required");
 
+    const managerAlreadyExists = await cursor.query(
+      `SELECT * FROM employee WHERE id = '${manager}'`
+    );
+
+    if (managerAlreadyExists.rowCount == 0)
+      throw new AppError("Dont exist any employee with this id: " + manager);
+
     const project_id = v4();
 
     try {
