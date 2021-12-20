@@ -20,7 +20,7 @@ class UpdateProjectController {
       project_name,
     });
 
-    return response.status(200).json({ project: updatedProject });
+    return response.status(200).json(updatedProject);
   }
 }
 

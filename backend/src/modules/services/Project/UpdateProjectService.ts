@@ -65,6 +65,21 @@ class UpdateProjectService {
 
     if (description && description.length > 500)
       throw new AppError("Description must be less than 500 characters");
+
+    const args = Object(arguments[0]);
+    let query = `UPDATE project SET `;
+
+    Object.keys(args).forEach((key) => {
+      if (key !== "project_id" && args[key] !== undefined)
+        query += `${key} = '${args[key]}', `;
+    });
+
+    query =
+      query.slice(0, -2) + ` WHERE project_id = '${project_id}' RETURNING *`;
+
+    const { rows } = await cursor.query(query);
+
+    return rows[0];
   }
 }
 
