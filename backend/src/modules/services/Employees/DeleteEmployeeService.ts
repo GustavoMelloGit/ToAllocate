@@ -21,7 +21,7 @@ class DeleteEmployeeService {
     }
 
     const { rows } = await cursor.query(
-      `SELECT FROM employee WHERE id = '${id}' RETURNING *`
+      `DELETE FROM employee WHERE id = '${id}' RETURNING *`
     );
 
     if (rows.length === 0) throw new AppError("Employee not found");
