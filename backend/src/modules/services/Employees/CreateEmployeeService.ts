@@ -59,7 +59,7 @@ class CreateEmployeeService {
           '${role}',
           '${email}',
           '${hashPass}'
-        ) RETURNING id, Fname, Lname, isAdmin, role, email
+        ) RETURNING id, Fname, Lname, isAdmin, role, email, created_at, updated_at
       `);
 
       return rows[0];
