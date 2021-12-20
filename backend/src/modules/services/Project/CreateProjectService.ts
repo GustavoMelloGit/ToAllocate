@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
-import { convert, diffBetweenDates, validateData } from "../../../utils/date";
+import { convert, diffBetweenDates, validateDate } from "../../../utils/date";
 
 interface IProjectRequest {
   project_name: string;
@@ -35,12 +35,12 @@ class CreateProjectService {
     const start_date_converted = convert(start_date);
     const end_date_converted = convert(end_date);
 
-    if (!validateData(start_date))
+    if (!validateDate(start_date))
       throw new AppError(
         "Start date is invalid. Please use the format dd-mm-yyyy"
       );
 
-    if (!validateData(end_date))
+    if (!validateDate(end_date))
       throw new AppError(
         "End date is invalid. Plese use the format dd-mm-yyyy"
       );
