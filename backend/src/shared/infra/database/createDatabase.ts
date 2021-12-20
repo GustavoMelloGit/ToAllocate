@@ -14,8 +14,8 @@ async function createDatabase() {
       role varchar(255) NOT NULL,
       email varchar(255) NOT NULL UNIQUE,
       password varchar(64) NOT NULL, 
-      created_at DATE DEFAULT CURRENT_DATE,
-      updated_at DATE DEFAULT CURRENT_DATE
+      created_at TIMESTAMP DEFAULT NOW(),
+      updated_at TIMESTAMP DEFAULT NOW()
   );
 `);
   } catch (error) {
@@ -33,8 +33,8 @@ async function createDatabase() {
             cost FLOAT NOT NULL,
             description varchar(500) NOT NULL,
             manager uuid NOT NULL,
-            created_at DATE DEFAULT CURRENT_DATE,
-            updated_at DATE DEFAULT CURRENT_DATE
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
         )
     `);
   } catch (error) {
