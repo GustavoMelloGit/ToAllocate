@@ -8,11 +8,11 @@ export async function isAdminMiddleware(
 ) {
   const employee_id = request.employee_id;
 
-  const isAdmin = await cursor.query(
+  const { rows: isAdmin } = await cursor.query(
     `SELECT isAdmin FROM employee WHERE id = '${employee_id}'`
   );
 
-  if (!isAdmin) {
+  if (!isAdmin[0].isadmin) {
     return response
       .status(401)
       .json({ message: "This action require admin privilege" });
