@@ -19,7 +19,6 @@ async function createDatabase() {
   );
 `);
   } catch (error) {
-    console.log(error);
     throw new AppError("Error during create table employee");
   }
 
