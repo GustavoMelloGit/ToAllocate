@@ -1,3 +1,4 @@
+import { hash } from "bcryptjs";
 import { cursor } from "../../../utils/cursor";
 
 interface IUpdateEmployeeRequest {
@@ -7,8 +8,10 @@ interface IUpdateEmployeeRequest {
 
 class UpdateEmployeeService {
   async execute({ employee_id, password }: IUpdateEmployeeRequest) {
+    const hashPassword = await hash(password as string, 10);
+
     const { rows: employee } = await cursor.query(
-      `UPDATE employee SET password = '${password}', updated_at = NOW() WHERE id = '${employee_id}' RETURNING *`
+      `UPDATE employee SET password = '${hashPassword}', updated_at = NOW() WHERE id = '${employee_id}' RETURNING *`
     );
 
     return employee[0];
