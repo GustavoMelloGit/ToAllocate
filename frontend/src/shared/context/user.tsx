@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import { ILoginAuthenticationForm } from '../../models/authentication/form';
-import { userSignIn } from '../../models/authentication/signin';
 import { IEmployeeModel } from '../../models/user/employee';
+import { decode } from 'jsonwebtoken';
 import api from '../../services/api';
 
 interface IAuthContext {
@@ -9,6 +9,7 @@ interface IAuthContext {
   isAuthenticated: boolean;
   login(form: ILoginAuthenticationForm, callback: VoidFunction): Promise<void>;
   logout(): void;
+  setUser(user: IEmployeeModel): void;
 }
 
 interface UserContextProps {
@@ -32,14 +33,14 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
   ) {
     try {
       const response = api.post('login', entry);
-      console.log(await response);
-      const data: userSignIn = (await response).data;
-
-      if (data) {
+      const token: string = (await response).data.token;
+      const user: IEmployeeModel = decode(token) as IEmployeeModel;
+      if (user) {
         setData({
-          user: data.user,
-          token: data.token,
+          user: user,
+          token: token,
         });
+        localStorage.setItem('@toAllocate:token', token);
         setisAuthenticated(true);
         callback();
         return;
@@ -50,11 +51,25 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
     }
   }
 
+  const logout = (): void => {
+    setData({} as AuthState);
+    setisAuthenticated(false);
+    localStorage.removeItem('@toAllocate:token');
+  };
+
+  const setUser = (user: IEmployeeModel): void => {
+    setData({
+      ...data,
+      user: user,
+    });
+  };
+
   return (
     <userContext.Provider
       value={{
         login: userLogin,
-        logout: () => {},
+        logout,
+        setUser,
         user: data.user,
         isAuthenticated,
       }}

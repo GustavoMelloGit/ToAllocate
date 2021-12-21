@@ -7,7 +7,6 @@ export const ProjectDetailComponentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 1400px;
   padding: 0 4rem;
   padding-bottom: 10rem;
   .indicators {

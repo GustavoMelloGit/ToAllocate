@@ -99,7 +99,7 @@ export default function ProjectDetailComponent(): JSX.Element {
         </ProjectDetail>
         <EmployeesWrapper>
           {DUMMY_EMPLOYEE.map((employee) => (
-            <EmployeeItem employee={employee} />
+            <EmployeeItem key={employee.id} employee={employee} />
           ))}
         </EmployeesWrapper>
       </ContentWrapper>

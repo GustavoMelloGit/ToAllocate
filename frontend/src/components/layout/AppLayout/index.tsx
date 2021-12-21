@@ -1,6 +1,6 @@
 import React from 'react';
 import HeaderComponent from '../Header';
-import { Container } from './styles';
+import { Container, Content, ContentWrapper } from './styles';
 
 interface IAppLayoutComponent {
   children: React.ReactNode;
@@ -11,7 +11,9 @@ export default function AppLayoutComponent(props: IAppLayoutComponent) {
   return (
     <Container>
       <HeaderComponent title='Projetos' />
-      {children}
+      <ContentWrapper>
+        <Content>{children}</Content>
+      </ContentWrapper>
     </Container>
   );
 }
