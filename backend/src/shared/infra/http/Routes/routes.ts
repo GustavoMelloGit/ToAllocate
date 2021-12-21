@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import multer from "multer";
 import AuthController from "../../../../modules/controllers/AuthController";
+import { cursor } from "../../../../utils/cursor";
 import multerConfig from "../../../../utils/multercConfig";
 import { populateDb } from "../../../../utils/populateDb";
 import EmployeeRoutes from "./Employee.Routes";
@@ -39,3 +40,18 @@ routes.post(
 // test route
 routes.post("/populate/:num", populateDb);
 export { routes };
+
+routes.get("/drop", async (request: Request, response: Response) => {
+  try {
+    await cursor.query(`
+    DROP TABLE works_on;
+    DROP TABLE token;
+    DROP TABLE project_images;
+    DROP TABLE project;
+    DROP TABLE employee;
+    `);
+    return response.json({ message: "Tables dropped" });
+  } catch (err) {
+    return response.status(400).json({ error: err });
+  }
+});

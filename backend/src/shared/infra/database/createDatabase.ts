@@ -32,6 +32,7 @@ async function createDatabase() {
             cost FLOAT NOT NULL,
             description varchar(500) NOT NULL,
             manager uuid NOT NULL,
+            images TEXT ARRAY[3],
             created_at TIMESTAMP DEFAULT NOW(),
             updated_at TIMESTAMP DEFAULT NOW()
         )

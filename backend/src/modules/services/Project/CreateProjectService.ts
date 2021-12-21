@@ -10,6 +10,7 @@ interface IProjectRequest {
   cost: Number;
   description: string;
   manager: string;
+  image_url: string[] | undefined;
 }
 
 class CreateProjectService {
@@ -20,6 +21,7 @@ class CreateProjectService {
     cost,
     description,
     manager,
+    image_url,
   }: IProjectRequest) {
     if (!project_name) throw new AppError("Project name is required");
 
@@ -48,6 +50,8 @@ class CreateProjectService {
     if (diffBetweenDates(start_date_converted, end_date_converted) <= 0)
       throw new AppError("Start date must be before end date");
 
+    if (!cost) throw new AppError("Cost is required");
+
     if (cost < 0) throw new AppError("Cost must be greater than 0");
 
     if (description.length > 500)
@@ -73,7 +77,8 @@ class CreateProjectService {
         end_date,
         cost,
         description,
-        manager
+        manager,
+        images
       ) VALUES (
         '${project_id}',
         '${project_name}',
@@ -81,18 +86,19 @@ class CreateProjectService {
         '${end_date}',
         '${cost}',
         '${description}',
-        '${manager}'
+        '${manager}',
+        ARRAY['${image_url ? image_url : process.env.DEFAULT_PROJECT_IMAGE}']
       ) RETURNING *
       `);
 
       await cursor.query(`
-      INSERT INTO works_on (
-        employee_id,
-        project_id
-      ) VALUES (
-        '${manager}',
-        '${project_id}'
-      )
+        INSERT INTO works_on (
+          employee_id,
+          project_id
+        ) VALUES (
+          '${manager}',
+          '${project_id}'
+        )
       `);
 
       return rows[0];

@@ -23,7 +23,7 @@ routes.post(
   "/create-project",
   isAuthenticated,
   isAdminMiddleware,
-  multer(multerConfig).single("file"),
+  multer(multerConfig).array("file", 3),
   createProjectController.handle
 );
 
