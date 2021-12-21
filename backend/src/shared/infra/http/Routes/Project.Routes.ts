@@ -1,9 +1,11 @@
 import { Router } from "express";
+import multer from "multer";
 // controllers
 import CreateProjectController from "../../../../modules/controllers/Project/CreateProjectController";
 import DeleteProjectController from "../../../../modules/controllers/Project/DeleteProjectController";
 import GetAllProjectsController from "../../../../modules/controllers/Project/GetAllProjectsController";
 import UpdateProjectController from "../../../../modules/controllers/Project/UpdateProjectController";
+import multerConfig from "../../../../utils/multercConfig";
 // middlewares
 import { isAuthenticated } from "../middlewares/authMiddleware";
 import { isAdminMiddleware } from "../middlewares/isAdminMiddleware";
@@ -21,6 +23,7 @@ routes.post(
   "/create-project",
   isAuthenticated,
   isAdminMiddleware,
+  multer(multerConfig).single("file"),
   createProjectController.handle
 );
 

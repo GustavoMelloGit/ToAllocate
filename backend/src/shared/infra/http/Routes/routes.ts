@@ -1,5 +1,7 @@
 import { Request, Response, Router } from "express";
+import multer from "multer";
 import AuthController from "../../../../modules/controllers/AuthController";
+import multerConfig from "../../../../utils/multercConfig";
 import { populateDb } from "../../../../utils/populateDb";
 import EmployeeRoutes from "./Employee.Routes";
 import ProjectRoutes from "./Project.Routes";
@@ -20,6 +22,19 @@ routes.get("/", (request: Request, response: Response) => {
 });
 
 routes.post("/login", authController.handle);
+
+routes.post(
+  "/upload",
+  multer(multerConfig).single("file"),
+  async (request, response) => {
+    if (request.file) {
+      const { originalname, size, key, location } = request.file;
+      console.log(originalname, size, key, location);
+      return response.json(request.file);
+    }
+    return response.json({ error: "No file provided" });
+  }
+);
 
 // test route
 routes.post("/populate/:num", populateDb);
