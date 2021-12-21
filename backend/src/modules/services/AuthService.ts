@@ -25,6 +25,7 @@ class AuthService {
         Fname: fields.fname,
         Lname: fields.lname,
         role: fields.role,
+        isadmin: fields.isadmin,
       },
       String(process.env.SECRET),
       {

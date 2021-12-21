@@ -8,7 +8,9 @@ export const HomeContainer = styled.div`
 `;
 
 export const ActionButtonsWrapper = styled.div`
+  display: flex;
   margin-top: 2rem;
+  margin-bottom: 6rem;
   .icon {
     font-size: 3rem;
     color: ${theme.colors.accent};

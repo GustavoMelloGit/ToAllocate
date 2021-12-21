@@ -5,4 +5,5 @@ export interface IEmployeeModel {
   email: string;
   role: string;
   avatar?: string;
+  isadmin: boolean;
 }
