@@ -24,7 +24,15 @@ interface AuthState {
 export const userContext = createContext<IAuthContext>({} as IAuthContext);
 
 const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
-  const [data, setData] = useState<AuthState>({} as AuthState);
+  const [data, setData] = useState<AuthState>(() => {
+    const token = localStorage.getItem('@toAllocate:token');
+    if (token) {
+      const user = decode(token) as IEmployeeModel;
+      return { user, token };
+    }
+    return { user: undefined, token: '' };
+  });
+
   const [isAuthenticated, setisAuthenticated] = useState(false);
 
   async function userLogin(
