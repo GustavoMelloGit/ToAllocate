@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import multer from "multer";
 import AuthController from "../../../../modules/controllers/AuthController";
 import { cursor } from "../../../../utils/cursor";
+import { deleteObjects } from "../../../../utils/deleteObject";
 import multerConfig from "../../../../utils/multerConfig";
 import { populateDb } from "../../../../utils/populateDb";
 import EmployeeRoutes from "./Employee.Routes";
@@ -57,5 +58,6 @@ routes.get("/drop", async (request: Request, response: Response) => {
 });
 
 routes.get("/delete-objects", (request: Request, response: Response) => {
-  return response.json('aee');
+  deleteObjects();
+  return response.json("deleted");
 });

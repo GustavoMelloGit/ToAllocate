@@ -28,7 +28,16 @@ export function deleteObjects() {
         if (err) {
           reject(err);
         } else {
-          await s3.deleteObjects();
+          if (data.Contents) {
+            const keys = data.Contents.map((content) => content.Key);
+            const promises = keys.map((key) => {
+              if (key !== process.env.DEFAULT_PROJECT_IMAGE) {
+                deleteObject(process.env.BUCKET_NAME as string, key as string);
+              }
+            });
+            await Promise.all(promises);
+            resolve(data);
+          }
         }
       }
     );
