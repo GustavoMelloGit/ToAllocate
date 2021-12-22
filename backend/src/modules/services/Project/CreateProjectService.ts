@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
 import { convert, diffBetweenDates, validateDate } from "../../../utils/date";
+import { deleteObject } from "../../../utils/deleteObject";
 
 interface IProjectRequest {
   project_name: string;
@@ -10,7 +11,12 @@ interface IProjectRequest {
   cost: Number;
   description: string;
   manager: string;
-  image_url: string[] | undefined;
+  images_url:
+    | {
+        [fieldname: string]: Express.Multer.File[];
+      }
+    | Express.Multer.File[]
+    | undefined;
 }
 
 class CreateProjectService {
@@ -21,7 +27,7 @@ class CreateProjectService {
     cost,
     description,
     manager,
-    image_url,
+    images_url,
   }: IProjectRequest) {
     if (!project_name) throw new AppError("Project name is required");
 
@@ -68,6 +74,22 @@ class CreateProjectService {
 
     const project_id = v4();
 
+    let images_url_array: Express.Multer.File[] = [];
+
+    if (Array.isArray(images_url)) {
+      images_url_array = images_url;
+    }
+
+    let values = ``;
+    images_url_array.forEach((image) => {
+      values += `'${image.location}', `;
+    });
+
+    values =
+      values.length > 0
+        ? values.slice(0, -2)
+        : `'` + (process.env.DEFAULT_PROJECT_IMAGE_URL as string) + `'`;
+
     try {
       const { rows } = await cursor.query(`
       INSERT INTO project (
@@ -87,7 +109,7 @@ class CreateProjectService {
         '${cost}',
         '${description}',
         '${manager}',
-        ARRAY['${image_url ? image_url : process.env.DEFAULT_PROJECT_IMAGE}']
+        ARRAY[${values}]
       ) RETURNING *
       `);
 
@@ -103,6 +125,11 @@ class CreateProjectService {
 
       return rows[0];
     } catch (error) {
+      if (images_url_array.length > 0) {
+        images_url_array.forEach(async (image) => {
+          await deleteObject(process.env.BUCKET_NAME as string, image.key);
+        });
+      }
       throw new AppError("Error during project creation");
     }
   }

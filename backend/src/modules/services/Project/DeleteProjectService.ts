@@ -1,40 +1,25 @@
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
+import { deleteObject } from "../../../utils/deleteObject";
 
 class DeleteProjectService {
   async execute(project_id: string) {
     const { rows } = await cursor.query(`
-      DELETE FROM
-        project
-        project_images
-      USING
-        project_images
-      WHERE
-        project.project_id = project_images.project_id
-      AND
-        project.project_id = '${project_id}'
+      DELETE FROM project WHERE project_id = '${project_id}' RETURNING project_name, images
     `);
 
     if (rows.length == 0) throw new AppError("Cannot find project", 404);
 
-    console.log(rows);
+    const images: any[] = [];
+    rows[0].images.forEach((image: any) => {
+      images.push(image.substring(image.lastIndexOf("/") + 1));
+    });
 
-    // const s3 = new aws.S3();
-
-    // await s3
-    //   .deleteObject({
-    //     Bucket: process.env.BUCKET_NAME as string,
-    //     Key: rows[0].image_url,
-    //   })
-    //   .promise()
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-    return rows;
+    images.forEach(async (image: string) => {
+      if (image !== process.env.DEFAULT_PROJECT_IMAGE)
+        await deleteObject(process.env.BUCKET_NAME as string, image);
+    });
+    return `Project '${rows[0].project_name}' has been deleted`;
   }
 }
 

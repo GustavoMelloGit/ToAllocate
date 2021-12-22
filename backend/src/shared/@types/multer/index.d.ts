@@ -4,6 +4,5 @@ declare namespace Express.Multer {
     key: string;
     size: number;
     location: string;
-    image_url: string[];
   }
 }
