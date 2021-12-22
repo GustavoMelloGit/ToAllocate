@@ -10,16 +10,13 @@ export const ProjectContainer = styled.section`
   margin-top: 3rem;
 `;
 export const ContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   justify-content: center;
-  margin-top: 5rem;
 `;
 export const ProjectForm = styled.form`
-  margin-top: 5rem;
   width: 40rem;
 
   div:not(:last-child) {
@@ -29,5 +26,15 @@ export const ProjectForm = styled.form`
   @media screen and (max-width: ${Breakpoints.sm}px) {
     width: 100%;
     padding: 0 1rem;
+  }
+`;
+export const FormInputsWrapper = styled.aside`
+  margin-top: 8rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: ${Breakpoints.md}px) {
+    flex-direction: column;
   }
 `;

@@ -13,7 +13,7 @@ const EmployeeItem: React.FC<IEmployeeItem> = (props) => {
       <AvatarComponent employee={employee} />
       <EmployeeInfo>
         <h1>
-          {employee.fname} {employee.lname}
+          {employee.Fname} {employee.Lname}
         </h1>
         <span>{employee.role}</span>
       </EmployeeInfo>

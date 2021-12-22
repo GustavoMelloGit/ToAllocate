@@ -12,9 +12,9 @@ const AvatarComponent: React.FC<IAvatarComponent> = (props) => {
     <AvatarWrapper>
       <AvatarContent>
         {employee.avatar ? (
-          <img src={employee.avatar} alt={employee.fname} />
+          <img src={employee.avatar} alt={employee.Fname} />
         ) : (
-          <h1>{employee.fname[0]}</h1>
+          <h1>{employee.Fname[0]}</h1>
         )}
       </AvatarContent>
     </AvatarWrapper>

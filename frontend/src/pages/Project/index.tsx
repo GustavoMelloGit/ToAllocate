@@ -5,7 +5,13 @@ import { AdminButtonComponent, AppLayoutComponent } from '../../components';
 import api from '../../services/api';
 import { AdminActionWrapper } from '../styles';
 import { MyInput, MyTextArea } from './components';
-import { ContentWrapper, ProjectContainer, ProjectForm } from './styles';
+import ImageUploadComponent from './components/ImageUpload';
+import {
+  ContentWrapper,
+  FormInputsWrapper,
+  ProjectContainer,
+  ProjectForm,
+} from './styles';
 
 const ProjectFormPage: React.FC = (props) => {
   const [name, setName] = useState('');
@@ -45,15 +51,18 @@ const ProjectFormPage: React.FC = (props) => {
             Salvar
           </AdminButtonComponent>
         </AdminActionWrapper>
-        <ContentWrapper>
-          <ProjectForm onSubmit={handleSubmit}>
-            <MyInput onChangeText={setName}>Nome*</MyInput>
-            <MyInput onChangeText={setDeadline} type='date' max='2025-12-31'>
-              Prazo*
-            </MyInput>
-            <MyTextArea onChangeText={setDescription}>Descrição*</MyTextArea>
-          </ProjectForm>
-        </ContentWrapper>
+        <FormInputsWrapper>
+          <ImageUploadComponent />
+          <ContentWrapper>
+            <ProjectForm onSubmit={handleSubmit}>
+              <MyInput onChangeText={setName}>Nome*</MyInput>
+              <MyInput onChangeText={setDeadline} type='date' max='2025-12-31'>
+                Prazo*
+              </MyInput>
+              <MyTextArea onChangeText={setDescription}>Descrição*</MyTextArea>
+            </ProjectForm>
+          </ContentWrapper>
+        </FormInputsWrapper>
       </ProjectContainer>
     </AppLayoutComponent>
   );

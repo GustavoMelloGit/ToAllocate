@@ -2,6 +2,7 @@ const theme = {
   colors: {
     primary: '#fafafa',
     accent: '#E63946',
+    gray: '#bccac9',
   },
   fonts: {
     primary: 'Roboto, sans-serif',

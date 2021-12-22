@@ -10,4 +10,5 @@ export const ButtonContainer = styled.button`
   color: white;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   font-size: 1.5rem;
+  font-weight: ${theme.fontWeights.bold};
 `;

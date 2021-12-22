@@ -1,24 +1,25 @@
 import React from 'react';
 import { Carousel, CarouselResponsiveOptions } from 'primereact/carousel';
 import { CarouselWrapper, ContentWrapper } from './styles';
-import { IProjectModel } from '../../../../../models/project/ProjectModel';
 import Breakpoints from '../../../../../shared/constants/Breakpoints';
 
 const ItemTemplate: React.FC<any> = (props) => {
   return (
     <ContentWrapper>
-      <img src={props.image} alt={props.title} />
+      <img src={props} alt={props} />
     </ContentWrapper>
   );
 };
 
 interface ICarouselComponent {
-  projects: IProjectModel[];
+  images: (string | undefined)[];
+  style?: object;
 }
 
-export default function CarouselComponent({
-  projects,
-}: ICarouselComponent): JSX.Element {
+const CarouselComponent: React.FC<ICarouselComponent> = (
+  props
+): JSX.Element => {
+  const { images, style } = props;
   const responsiveOptions: CarouselResponsiveOptions[] = [
     {
       breakpoint: `${Breakpoints.xl}px`,
@@ -35,7 +36,7 @@ export default function CarouselComponent({
   return (
     <CarouselWrapper>
       <Carousel
-        value={projects}
+        value={images}
         itemTemplate={ItemTemplate}
         numVisible={3}
         numScroll={1}
@@ -43,7 +44,10 @@ export default function CarouselComponent({
         indicatorsContentClassName='indicators'
         containerClassName='carousel-container'
         responsiveOptions={responsiveOptions}
+        style={{ ...style }}
       />
     </CarouselWrapper>
   );
-}
+};
+
+export default CarouselComponent;
