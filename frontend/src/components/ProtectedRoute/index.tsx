@@ -7,9 +7,10 @@ interface IProtectedRoute {
 }
 export default function ProtectedRoute({ children }: IProtectedRoute) {
   const auth = useAuth();
+
   const location = useLocation();
 
-  if (!auth.isAuthenticated) {
+  if (!auth.user) {
     return <Navigate to='/' state={{ from: location }} />;
   }
 
