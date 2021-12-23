@@ -1,1 +1,584 @@
-{"_type":"export","__export_format":4,"__export_date":"2021-12-22T23:50:16.417Z","__export_source":"insomnia.desktop.app:v2021.7.2","resources":[{"_id":"req_80cc315eaab04ee89459fc518befa442","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1640215794081,"created":1639432674207,"url":"{{ _.baseURL }}/login","name":"login","description":"","method":"POST","body":{"mimeType":"application/json","text":"{\n\t\"email\": \"{{ _.admin_email }}\",\n\t\"password\": \"{{ _.admin_pass }}\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_ee547e57d6bc4c219f9888705496d44d"}],"authentication":{},"metaSortKey":-1639865760908,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"wrk_772633de15ab426f95e5224228969fcc","parentId":null,"modified":1638917961769,"created":1638917961769,"name":"Trabalho BD","description":"","scope":"collection","_type":"workspace"},{"_id":"req_43e528b2a32a45bebd4e6b3bf03328e2","parentId":"fld_dcea72cc3d3547638060279753fa92db","modified":1640215502613,"created":1639192280496,"url":"{{ _.baseURL }}/create-employee","name":"Create","description":"","method":"POST","body":{"mimeType":"application/json","text":"{\n\t\"Fname\": \"Caio\",\n\t\"Lname\": \"Felicio\",\n\t\"isadmin\": false,\n\t\"role\": \"developer\",\n\t\"email\": \"caio@email.com\",\n\t\"password\": \"123\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_631bdb35f2424f079fedb8a9bdd75673"}],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}","disabled":false},"metaSortKey":-1640026119804,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"fld_dcea72cc3d3547638060279753fa92db","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1640204485896,"created":1639515278433,"name":"EMPLOYEE","description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1639865760883,"_type":"request_group"},{"_id":"req_40ad180a8ff349b793f1e566bd046d86","parentId":"fld_dcea72cc3d3547638060279753fa92db","modified":1640215519316,"created":1639193949428,"url":"{{ _.baseURL }}/employees","name":"Read","description":"","method":"GET","body":{},"parameters":[],"headers":[],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}","disabled":false},"metaSortKey":-1640026119779,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_5cdf47d7c74b4094961708fac5a3a070","parentId":"fld_dcea72cc3d3547638060279753fa92db","modified":1640215777201,"created":1640011226882,"url":"{{ _.baseURL }}/employee/update","name":"Update (Current User)","description":"","method":"PUT","body":{"mimeType":"application/json","text":"{\n\t\"password\": \"1234\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_e352b17c45754ea684a911606b2d3da3"}],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}"},"metaSortKey":-1640026119766.5,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_95d766b01be84c9f896b613c3ac6e8d0","parentId":"fld_dcea72cc3d3547638060279753fa92db","modified":1640215775135,"created":1640026119754,"url":"{{ _.baseURL }}/admin/update/employee/58673789-174d-4138-bfdb-707e5f6ed8a4","name":"Update (As admin)","description":"","method":"PUT","body":{"mimeType":"application/json","text":"{\n\t\"role\": \"manager\",\n\t\"isadmin\": false\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_727f8202cd104d28bd3d2d03e73ea1a3"}],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}"},"metaSortKey":-1640026119754,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_70fd1081712c4a7fb7a83405dd4e5907","parentId":"fld_dcea72cc3d3547638060279753fa92db","modified":1640215553473,"created":1639515296265,"url":"{{ _.baseURL }}/delete-employee/58673789-174d-4138-bfdb-707e5f6ed8a4","name":"Delete","description":"","method":"DELETE","body":{},"parameters":[],"headers":[],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}","disabled":false},"metaSortKey":-1639515296265,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_43d484676f6f4bb2b3eb67756cd3c1b5","parentId":"fld_97499f5ce3c54232acb6490d26ffa792","modified":1640217008846,"created":1639532510511,"url":"{{ _.baseURL }}/create-project","name":"Create","description":"","method":"POST","body":{"mimeType":"multipart/form-data","params":[{"name":"project_name","value":"Nome","id":"pair_62a54820b5bb49149fa213f4421a6887"},{"id":"pair_84fefb9e9b5d40c2804ca162937db3ae","name":"start_date","value":"13-03-2022","description":""},{"id":"pair_0f9ee62047b34bbd89b3ff6df411f55c","name":"end_date","value":"13-02-2023","description":""},{"id":"pair_14874d22ef1645b8960d5be36f899238","name":"cost","value":"5000","description":""},{"id":"pair_eaf230a9526640f5892b311fc19db0dc","name":"description","value":"descricao","description":""},{"id":"pair_39e38cbf823a4df5a42ce1147ffab836","name":"manager","value":"id aqui","description":""},{"id":"pair_e88dc3448e5c414c8dbdf49a66f53d05","name":"file","value":"","description":"","type":"file","fileName":"C:\\Users\\caios\\Downloads\\artcopias.png","disabled":false},{"id":"pair_0428de8f4e044302b4ee906139522d36","name":"file","value":"","description":"","type":"file","fileName":"C:\\Users\\caios\\Downloads\\artcopias2.png","disabled":true},{"id":"pair_5d1922b0ad194fe992950d0537a98a96","name":"file","value":"","description":"","type":"file","fileName":"C:\\Users\\caios\\Downloads\\artcopias3.png","disabled":true}]},"parameters":[],"headers":[{"name":"Content-Type","value":"multipart/form-data","id":"pair_d7e763a8437d4c2eb3cd4b5bc707e8a6"}],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}"},"metaSortKey":-1639923385936,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"fld_97499f5ce3c54232acb6490d26ffa792","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1640204488315,"created":1639532500938,"name":"PROJECT","description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1639865760870.5,"_type":"request_group"},{"_id":"req_458e1c6a40ef4765bb2afefa4323a6c4","parentId":"fld_97499f5ce3c54232acb6490d26ffa792","modified":1640215642783,"created":1639593924572,"url":"{{ _.baseURL }}/projects","name":"Read","description":"","method":"GET","body":{},"parameters":[],"headers":[],"authentication":{},"metaSortKey":-1639923385911,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_2d7ab193c6a74271903aa45f36e2a1e6","parentId":"fld_97499f5ce3c54232acb6490d26ffa792","modified":1640216970669,"created":1639923385886,"url":"{{ _.baseURL }}/update-project/:project_id","name":"Update","description":"","method":"PUT","body":{"mimeType":"multipart/form-data","params":[{"id":"pair_afbca9788cd349f9b8457a161bbae7e6","name":"project_name","value":"novo nome","description":"","disabled":false},{"id":"pair_61dfdece9d654476aa9928fd50054c03","name":"cost","value":"5555","description":"","disabled":false},{"id":"pair_17adb3c82a6b489a8aa3c278be21f998","name":"end_date","value":"14-03-2029","description":"","disabled":false},{"id":"pair_a38042610a084909b7a776d10a5bea5b","name":"description","value":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.","description":"","type":"text","fileName":"C:\\Users\\caios\\Downloads\\diagrama-de-classe.jpeg","disabled":false,"multiline":false},{"id":"pair_2435b5357aae47e78647ddde9a679eb7","name":"manager","value":"id aqui","description":"","type":"text","fileName":"C:\\Users\\caios\\Downloads\\tradutorteste.png","disabled":false,"multiline":false},{"id":"pair_4609d118e5124ae99cfd72424769336b","name":"file","value":"","description":"","type":"file"},{"id":"pair_3be430a44b744b4080d2fc57968ca200","name":"file","value":"","description":"","type":"file"},{"id":"pair_40d03c0fb2bc4c089853cfd27d601188","name":"file","value":"","description":"","type":"file"}]},"parameters":[],"headers":[{"name":"Content-Type","value":"multipart/form-data","id":"pair_c4d05bcba35d45f58ae47e9a027018eb"}],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}"},"metaSortKey":-1639923385886,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_7c8cde17b3e04bc5b5d164088ffc139b","parentId":"fld_97499f5ce3c54232acb6490d26ffa792","modified":1640216973116,"created":1639592227263,"url":"{{ _.baseURL }}/delete-project/:project_id","name":"Delete","description":"","method":"DELETE","body":{},"parameters":[],"headers":[],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}"},"metaSortKey":-1639592227263,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_422fe1a2921d4162aa38b3976bf913c7","parentId":"fld_db4c1588c6014b22a1ed48949d3b86e4","modified":1640145073158,"created":1640145061999,"url":"{{ _.baseURL }}/delete-objects","name":"Delete Objects","description":"","method":"GET","body":{},"parameters":[],"headers":[],"authentication":{},"metaSortKey":-1640145061999,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"fld_db4c1588c6014b22a1ed48949d3b86e4","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1639865760858,"created":1639865760858,"name":"Other","description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1639865760858,"_type":"request_group"},{"_id":"req_e64419bd871446daba91f3619255c87f","parentId":"fld_db4c1588c6014b22a1ed48949d3b86e4","modified":1640141506177,"created":1638917977082,"url":"{{ _.baseURL }}/drop","name":"Home","description":"","method":"GET","body":{},"parameters":[],"headers":[],"authentication":{},"metaSortKey":-1639699130948,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_4664a6ec28b24b778d3eb64c80766e9f","parentId":"fld_db4c1588c6014b22a1ed48949d3b86e4","modified":1640204455935,"created":1640204455609,"url":"{{ _.baseURL }}/drop","name":"drop tables","description":"","method":"GET","body":{},"parameters":[],"headers":[],"authentication":{"type":"bearer","token":"{{ _.TOKEN }}"},"metaSortKey":-1639646527735,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"env_e7a1bd4b199e66da2571ff87d495a663d7ecf459","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1640215494132,"created":1638917961789,"name":"Base Environment","data":{"baseURL":"http://localhost:3333","admin_email":"admin@admin.com","admin_pass":"admin_password","TOKEN":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGbmFtZSI6IkNhaW8iLCJMbmFtZSI6IkZlbGljaW8iLCJyb2xlIjoiZGV2ZWxvcGVyIiwiaXNhZG1pbiI6ZmFsc2UsImlhdCI6MTY0MDIxNTQzOSwiZXhwIjoxNjQwMzAxODM5LCJzdWIiOiI1ODY3Mzc4OS0xNzRkLTQxMzgtYmZkYi03MDdlNWY2ZWQ4YTQifQ.kdIBncu3cSSg5Hj5T1icAhYo9vmtK53MUkV5hrOuoqk"},"dataPropertyOrder":{"&":["baseURL","admin_email","admin_pass","TOKEN"]},"color":null,"isPrivate":false,"metaSortKey":1638917961789,"_type":"environment"},{"_id":"jar_e7a1bd4b199e66da2571ff87d495a663d7ecf459","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1638917961801,"created":1638917961801,"name":"Default Jar","cookies":[],"_type":"cookie_jar"},{"_id":"spc_969cec8e2a7d440986c72f0e6f51b901","parentId":"wrk_772633de15ab426f95e5224228969fcc","modified":1638917961773,"created":1638917961773,"fileName":"Trabalho BD","contents":"","contentType":"yaml","_type":"api_spec"}]}
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2021-12-22T23:50:16.417Z",
+  "__export_source": "insomnia.desktop.app:v2021.7.2",
+  "resources": [
+    {
+      "_id": "req_80cc315eaab04ee89459fc518befa442",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1640215794081,
+      "created": 1639432674207,
+      "url": "{{ _.baseURL }}/login",
+      "name": "login",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"{{ _.admin_email }}\",\n\t\"password\": \"{{ _.admin_pass }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_ee547e57d6bc4c219f9888705496d44d"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1639865760908,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_772633de15ab426f95e5224228969fcc",
+      "parentId": null,
+      "modified": 1638917961769,
+      "created": 1638917961769,
+      "name": "Trabalho BD",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_43e528b2a32a45bebd4e6b3bf03328e2",
+      "parentId": "fld_dcea72cc3d3547638060279753fa92db",
+      "modified": 1640215502613,
+      "created": 1639192280496,
+      "url": "{{ _.baseURL }}/create-employee",
+      "name": "Create",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"Fname\": \"Caio\",\n\t\"Lname\": \"Felicio\",\n\t\"isadmin\": false,\n\t\"role\": \"developer\",\n\t\"email\": \"caio@email.com\",\n\t\"password\": \"123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_631bdb35f2424f079fedb8a9bdd75673"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.TOKEN }}",
+        "disabled": false
+      },
+      "metaSortKey": -1640026119804,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_dcea72cc3d3547638060279753fa92db",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1640204485896,
+      "created": 1639515278433,
+      "name": "EMPLOYEE",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1639865760883,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_40ad180a8ff349b793f1e566bd046d86",
+      "parentId": "fld_dcea72cc3d3547638060279753fa92db",
+      "modified": 1640215519316,
+      "created": 1639193949428,
+      "url": "{{ _.baseURL }}/employees",
+      "name": "Read",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.TOKEN }}",
+        "disabled": false
+      },
+      "metaSortKey": -1640026119779,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_5cdf47d7c74b4094961708fac5a3a070",
+      "parentId": "fld_dcea72cc3d3547638060279753fa92db",
+      "modified": 1640215777201,
+      "created": 1640011226882,
+      "url": "{{ _.baseURL }}/employee/update",
+      "name": "Update (Current User)",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"password\": \"1234\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e352b17c45754ea684a911606b2d3da3"
+        }
+      ],
+      "authentication": { "type": "bearer", "token": "{{ _.TOKEN }}" },
+      "metaSortKey": -1640026119766.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_95d766b01be84c9f896b613c3ac6e8d0",
+      "parentId": "fld_dcea72cc3d3547638060279753fa92db",
+      "modified": 1640215775135,
+      "created": 1640026119754,
+      "url": "{{ _.baseURL }}/admin/update/employee/58673789-174d-4138-bfdb-707e5f6ed8a4",
+      "name": "Update (As admin)",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"role\": \"manager\",\n\t\"isadmin\": false\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_727f8202cd104d28bd3d2d03e73ea1a3"
+        }
+      ],
+      "authentication": { "type": "bearer", "token": "{{ _.TOKEN }}" },
+      "metaSortKey": -1640026119754,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_70fd1081712c4a7fb7a83405dd4e5907",
+      "parentId": "fld_dcea72cc3d3547638060279753fa92db",
+      "modified": 1640215553473,
+      "created": 1639515296265,
+      "url": "{{ _.baseURL }}/delete-employee/58673789-174d-4138-bfdb-707e5f6ed8a4",
+      "name": "Delete",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.TOKEN }}",
+        "disabled": false
+      },
+      "metaSortKey": -1639515296265,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_43d484676f6f4bb2b3eb67756cd3c1b5",
+      "parentId": "fld_97499f5ce3c54232acb6490d26ffa792",
+      "modified": 1640217008846,
+      "created": 1639532510511,
+      "url": "{{ _.baseURL }}/create-project",
+      "name": "Create",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "project_name",
+            "value": "Nome",
+            "id": "pair_62a54820b5bb49149fa213f4421a6887"
+          },
+          {
+            "id": "pair_84fefb9e9b5d40c2804ca162937db3ae",
+            "name": "start_date",
+            "value": "13-03-2022",
+            "description": ""
+          },
+          {
+            "id": "pair_0f9ee62047b34bbd89b3ff6df411f55c",
+            "name": "end_date",
+            "value": "13-02-2023",
+            "description": ""
+          },
+          {
+            "id": "pair_14874d22ef1645b8960d5be36f899238",
+            "name": "cost",
+            "value": "5000",
+            "description": ""
+          },
+          {
+            "id": "pair_eaf230a9526640f5892b311fc19db0dc",
+            "name": "description",
+            "value": "descricao",
+            "description": ""
+          },
+          {
+            "id": "pair_39e38cbf823a4df5a42ce1147ffab836",
+            "name": "manager",
+            "value": "id aqui",
+            "description": ""
+          },
+          {
+            "id": "pair_e88dc3448e5c414c8dbdf49a66f53d05",
+            "name": "file",
+            "value": "",
+            "description": "",
+            "type": "file",
+            "fileName": "C:\\Users\\caios\\Downloads\\artcopias.png",
+            "disabled": false
+          },
+          {
+            "id": "pair_0428de8f4e044302b4ee906139522d36",
+            "name": "file",
+            "value": "",
+            "description": "",
+            "type": "file",
+            "fileName": "C:\\Users\\caios\\Downloads\\artcopias2.png",
+            "disabled": true
+          },
+          {
+            "id": "pair_5d1922b0ad194fe992950d0537a98a96",
+            "name": "file",
+            "value": "",
+            "description": "",
+            "type": "file",
+            "fileName": "C:\\Users\\caios\\Downloads\\artcopias3.png",
+            "disabled": true
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "multipart/form-data",
+          "id": "pair_d7e763a8437d4c2eb3cd4b5bc707e8a6"
+        }
+      ],
+      "authentication": { "type": "bearer", "token": "{{ _.TOKEN }}" },
+      "metaSortKey": -1639923385936,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_97499f5ce3c54232acb6490d26ffa792",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1640204488315,
+      "created": 1639532500938,
+      "name": "PROJECT",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1639865760870.5,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_458e1c6a40ef4765bb2afefa4323a6c4",
+      "parentId": "fld_97499f5ce3c54232acb6490d26ffa792",
+      "modified": 1640215642783,
+      "created": 1639593924572,
+      "url": "{{ _.baseURL }}/projects",
+      "name": "Read",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1639923385911,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_2d7ab193c6a74271903aa45f36e2a1e6",
+      "parentId": "fld_97499f5ce3c54232acb6490d26ffa792",
+      "modified": 1640216970669,
+      "created": 1639923385886,
+      "url": "{{ _.baseURL }}/update-project/:project_id",
+      "name": "Update",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "id": "pair_afbca9788cd349f9b8457a161bbae7e6",
+            "name": "project_name",
+            "value": "novo nome",
+            "description": "",
+            "disabled": false
+          },
+          {
+            "id": "pair_61dfdece9d654476aa9928fd50054c03",
+            "name": "cost",
+            "value": "5555",
+            "description": "",
+            "disabled": false
+          },
+          {
+            "id": "pair_17adb3c82a6b489a8aa3c278be21f998",
+            "name": "end_date",
+            "value": "14-03-2029",
+            "description": "",
+            "disabled": false
+          },
+          {
+            "id": "pair_a38042610a084909b7a776d10a5bea5b",
+            "name": "description",
+            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "description": "",
+            "type": "text",
+            "fileName": "C:\\Users\\caios\\Downloads\\diagrama-de-classe.jpeg",
+            "disabled": false,
+            "multiline": false
+          },
+          {
+            "id": "pair_2435b5357aae47e78647ddde9a679eb7",
+            "name": "manager",
+            "value": "id aqui",
+            "description": "",
+            "type": "text",
+            "fileName": "C:\\Users\\caios\\Downloads\\tradutorteste.png",
+            "disabled": false,
+            "multiline": false
+          },
+          {
+            "id": "pair_4609d118e5124ae99cfd72424769336b",
+            "name": "file",
+            "value": "",
+            "description": "",
+            "type": "file"
+          },
+          {
+            "id": "pair_3be430a44b744b4080d2fc57968ca200",
+            "name": "file",
+            "value": "",
+            "description": "",
+            "type": "file"
+          },
+          {
+            "id": "pair_40d03c0fb2bc4c089853cfd27d601188",
+            "name": "file",
+            "value": "",
+            "description": "",
+            "type": "file"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "multipart/form-data",
+          "id": "pair_c4d05bcba35d45f58ae47e9a027018eb"
+        }
+      ],
+      "authentication": { "type": "bearer", "token": "{{ _.TOKEN }}" },
+      "metaSortKey": -1639923385886,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_7c8cde17b3e04bc5b5d164088ffc139b",
+      "parentId": "fld_97499f5ce3c54232acb6490d26ffa792",
+      "modified": 1640216973116,
+      "created": 1639592227263,
+      "url": "{{ _.baseURL }}/delete-project/:project_id",
+      "name": "Delete",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": { "type": "bearer", "token": "{{ _.TOKEN }}" },
+      "metaSortKey": -1639592227263,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_422fe1a2921d4162aa38b3976bf913c7",
+      "parentId": "fld_db4c1588c6014b22a1ed48949d3b86e4",
+      "modified": 1640145073158,
+      "created": 1640145061999,
+      "url": "{{ _.baseURL }}/delete-objects",
+      "name": "Delete Objects",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1640145061999,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_db4c1588c6014b22a1ed48949d3b86e4",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1639865760858,
+      "created": 1639865760858,
+      "name": "Other",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1639865760858,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_e64419bd871446daba91f3619255c87f",
+      "parentId": "fld_db4c1588c6014b22a1ed48949d3b86e4",
+      "modified": 1640141506177,
+      "created": 1638917977082,
+      "url": "{{ _.baseURL }}/drop",
+      "name": "Home",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1639699130948,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4664a6ec28b24b778d3eb64c80766e9f",
+      "parentId": "fld_db4c1588c6014b22a1ed48949d3b86e4",
+      "modified": 1640204455935,
+      "created": 1640204455609,
+      "url": "{{ _.baseURL }}/drop",
+      "name": "drop tables",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": { "type": "bearer", "token": "{{ _.TOKEN }}" },
+      "metaSortKey": -1639646527735,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_e7a1bd4b199e66da2571ff87d495a663d7ecf459",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1640215494132,
+      "created": 1638917961789,
+      "name": "Base Environment",
+      "data": {
+        "baseURL": "http://localhost:3333",
+        "admin_email": "admin@admin.com",
+        "admin_pass": "admin_password",
+        "TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGbmFtZSI6IkNhaW8iLCJMbmFtZSI6IkZlbGljaW8iLCJyb2xlIjoiZGV2ZWxvcGVyIiwiaXNhZG1pbiI6ZmFsc2UsImlhdCI6MTY0MDIxNTQzOSwiZXhwIjoxNjQwMzAxODM5LCJzdWIiOiI1ODY3Mzc4OS0xNzRkLTQxMzgtYmZkYi03MDdlNWY2ZWQ4YTQifQ.kdIBncu3cSSg5Hj5T1icAhYo9vmtK53MUkV5hrOuoqk"
+      },
+      "dataPropertyOrder": {
+        "&": ["baseURL", "admin_email", "admin_pass", "TOKEN"]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1638917961789,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_e7a1bd4b199e66da2571ff87d495a663d7ecf459",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1638917961801,
+      "created": 1638917961801,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "spc_969cec8e2a7d440986c72f0e6f51b901",
+      "parentId": "wrk_772633de15ab426f95e5224228969fcc",
+      "modified": 1638917961773,
+      "created": 1638917961773,
+      "fileName": "Trabalho BD",
+      "contents": "",
+      "contentType": "yaml",
+      "_type": "api_spec"
+    }
+  ]
+}
