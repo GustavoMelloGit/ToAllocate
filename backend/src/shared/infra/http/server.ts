@@ -6,8 +6,6 @@ import { app } from "./app";
 
 dotenv.config();
 
-// populateDb();
-
-app.listen(3333, () => {
+app.listen(process.env.PORT || 3333, () => {
   console.log("Servidor rodando em http://localhost:3333");
 });
