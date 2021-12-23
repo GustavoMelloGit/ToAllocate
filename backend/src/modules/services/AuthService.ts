@@ -30,7 +30,7 @@ class AuthService {
       String(process.env.SECRET),
       {
         subject: fields.id,
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
 

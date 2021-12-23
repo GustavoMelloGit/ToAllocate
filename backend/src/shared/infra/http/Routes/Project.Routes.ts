@@ -5,7 +5,7 @@ import CreateProjectController from "../../../../modules/controllers/Project/Cre
 import DeleteProjectController from "../../../../modules/controllers/Project/DeleteProjectController";
 import GetAllProjectsController from "../../../../modules/controllers/Project/GetAllProjectsController";
 import UpdateProjectController from "../../../../modules/controllers/Project/UpdateProjectController";
-import multerConfig from "../../../../utils/multercConfig";
+import multerConfig from "../../../../utils/multerConfig";
 // middlewares
 import { isAuthenticated } from "../middlewares/authMiddleware";
 import { isAdminMiddleware } from "../middlewares/isAdminMiddleware";
@@ -19,11 +19,38 @@ const routes = Router();
 
 routes.get("/projects", getAllProjectsController.handle);
 
+const updateFields = [
+  {
+    name: "cost",
+    maxCount: 1,
+  },
+  {
+    name: "description",
+    maxCount: 1,
+  },
+  {
+    name: "file",
+    maxCount: 3,
+  },
+  {
+    name: "end_date",
+    maxCount: 1,
+  },
+  {
+    name: "manager",
+    maxCount: 1,
+  },
+  {
+    name: "project_name",
+    maxCount: 1,
+  },
+];
+
 routes.post(
   "/create-project",
   isAuthenticated,
   isAdminMiddleware,
-  multer(multerConfig).single("file"),
+  multer(multerConfig).array("file", 3),
   createProjectController.handle
 );
 
@@ -31,6 +58,8 @@ routes.put(
   "/update-project/:project_id",
   isAuthenticated,
   isAdminMiddleware,
+  multer(multerConfig).fields(updateFields),
+  // multer(multerConfig).array("file", 3),
   updateProjectController.handle
 );
 

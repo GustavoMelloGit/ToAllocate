@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
 import { convert, diffBetweenDates, validateDate } from "../../../utils/date";
+import { deleteObject } from "../../../utils/deleteObject";
 
 interface IProjectRequest {
   project_name: string;
@@ -10,6 +11,12 @@ interface IProjectRequest {
   cost: Number;
   description: string;
   manager: string;
+  images_url:
+    | {
+        [fieldname: string]: Express.Multer.File[];
+      }
+    | Express.Multer.File[]
+    | undefined;
 }
 
 class CreateProjectService {
@@ -20,6 +27,7 @@ class CreateProjectService {
     cost,
     description,
     manager,
+    images_url,
   }: IProjectRequest) {
     if (!project_name) throw new AppError("Project name is required");
 
@@ -48,6 +56,8 @@ class CreateProjectService {
     if (diffBetweenDates(start_date_converted, end_date_converted) <= 0)
       throw new AppError("Start date must be before end date");
 
+    if (!cost) throw new AppError("Cost is required");
+
     if (cost < 0) throw new AppError("Cost must be greater than 0");
 
     if (description.length > 500)
@@ -64,6 +74,22 @@ class CreateProjectService {
 
     const project_id = v4();
 
+    let images_url_array: Express.Multer.File[] = [];
+
+    if (Array.isArray(images_url)) {
+      images_url_array = images_url;
+    }
+
+    let values = ``;
+    images_url_array.forEach((image) => {
+      values += `'${image.location}', `;
+    });
+
+    values =
+      values.length > 0
+        ? values.slice(0, -2)
+        : `'` + (process.env.DEFAULT_PROJECT_IMAGE_URL as string) + `'`;
+
     try {
       const { rows } = await cursor.query(`
       INSERT INTO project (
@@ -73,7 +99,8 @@ class CreateProjectService {
         end_date,
         cost,
         description,
-        manager
+        manager,
+        images
       ) VALUES (
         '${project_id}',
         '${project_name}',
@@ -81,22 +108,28 @@ class CreateProjectService {
         '${end_date}',
         '${cost}',
         '${description}',
-        '${manager}'
+        '${manager}',
+        ARRAY[${values}]
       ) RETURNING *
       `);
 
       await cursor.query(`
-      INSERT INTO works_on (
-        employee_id,
-        project_id
-      ) VALUES (
-        '${manager}',
-        '${project_id}'
-      )
+        INSERT INTO works_on (
+          employee_id,
+          project_id
+        ) VALUES (
+          '${manager}',
+          '${project_id}'
+        )
       `);
 
       return rows[0];
     } catch (error) {
+      if (images_url_array.length > 0) {
+        images_url_array.forEach(async (image) => {
+          await deleteObject(process.env.BUCKET_NAME as string, image.key);
+        });
+      }
       throw new AppError("Error during project creation");
     }
   }
