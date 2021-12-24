@@ -10,7 +10,6 @@ interface IProtectedRoute {
 }
 export default function ProtectedRoute({ children, role }: IProtectedRoute) {
   const { user } = useAuth();
-
   const location = useLocation();
 
   if (!user) {

@@ -1,12 +1,16 @@
-import { AdminButtonComponent, AppLayoutComponent } from '../../components';
 import { ActionButtonsWrapper, HomeContainer } from './styles';
 import { BiMenuAltRight, BiSearch } from 'react-icons/bi';
-import { ButtonComponent, ProjectDetailComponent } from '../../components';
-import useAuth from '../../hooks/useAuth';
-import { AdminActionWrapper } from '../styles';
+import {
+  ButtonComponent,
+  ProjectDetailComponent,
+  AdminButtonComponent,
+  AppLayoutComponent,
+} from '../../../components';
+import useAuth from '../../../hooks/useAuth';
+import { AdminActionWrapper } from '../../styles';
 import { useNavigate } from 'react-router-dom';
 
-export default function HomePage(): JSX.Element {
+export default function ProjectDetail(): JSX.Element {
   const auth = useAuth();
   const navigate = useNavigate();
   const { user } = auth;

@@ -45,7 +45,7 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
       const user: IEmployeeModel = decode(token) as IEmployeeModel;
       if (user) {
         setData({
-          user: user,
+          user: { ...user, role: 'admin' },
           token: token,
         });
         localStorage.setItem('@toAllocate:token', token);
