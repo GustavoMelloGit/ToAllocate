@@ -12,11 +12,16 @@ import {
   ProjectContainer,
   ProjectForm,
 } from './styles';
+import { formatCPF, formatDate } from '../../shared/helpers/formatters';
 
 const ProjectFormPage: React.FC = (props) => {
   const [name, setName] = useState('');
   const [deadline, setDeadline] = useState('');
   const [description, setDescription] = useState('');
+  const [images, setImages] = useState<FileList>();
+  const [startDate, setStartDate] = useState('');
+  const [cost, setCost] = useState('');
+  const [managerCPF, setManagerCPF] = useState('');
 
   const navigate = useNavigate();
 
@@ -24,16 +29,26 @@ const ProjectFormPage: React.FC = (props) => {
     navigate('/home');
   };
 
+  const handleCPFChange = (text: string) => {
+    if (text.length <= 14) {
+      setManagerCPF(formatCPF(text));
+    }
+  };
+
   const handleSubmit = async () => {
+    const formatStartDate = formatDate(startDate);
+    const formatDeadline = formatDate(deadline);
+    const formData = new FormData();
+    formData.append('project_name', name);
+    formData.append('start_date', formatStartDate);
+    formData.append('end_date', formatDeadline);
+    formData.append('cost', cost);
+    formData.append('description', description);
+    formData.append('manager', 'cdf54f90-a236-4d39-aa8d-dc53a981d8d5');
+    formData.forEach((key) => console.log(key));
     try {
-      api.post('/create-project', {
-        project_name: name,
-        start_date: new Date().toISOString,
-        end_date: deadline,
-        description,
-        manager: '843a271f-8169-42c1-acb1-3e308d2432f7',
-      });
-      toast.success('Projeto criado com sucesso!');
+      await api.post('/create-project', formData);
+      toast.success('Projeto cadastrado com sucesso!');
     } catch (e) {
       console.log(e);
       toast.error('Erro ao criar projeto!');
@@ -52,12 +67,25 @@ const ProjectFormPage: React.FC = (props) => {
           </AdminButtonComponent>
         </AdminActionWrapper>
         <FormInputsWrapper>
-          <ImageUploadComponent />
+          <ImageUploadComponent images={images} setImages={setImages} />
           <ContentWrapper>
-            <ProjectForm onSubmit={handleSubmit}>
+            <ProjectForm id='test' onSubmit={handleSubmit}>
               <MyInput onChangeText={setName}>Nome*</MyInput>
+              <MyInput onChangeText={setStartDate} type='date' max='2025-12-31'>
+                Data de início*
+              </MyInput>
               <MyInput onChangeText={setDeadline} type='date' max='2025-12-31'>
-                Prazo*
+                Data de término*
+              </MyInput>
+              <MyInput onChangeText={setCost} type='number'>
+                Valor*
+              </MyInput>
+              <MyInput
+                onChangeText={handleCPFChange}
+                value={managerCPF}
+                type='text'
+              >
+                CPF do gerente*
               </MyInput>
               <MyTextArea onChangeText={setDescription}>Descrição*</MyTextArea>
             </ProjectForm>
