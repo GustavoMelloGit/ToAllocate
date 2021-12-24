@@ -17,7 +17,7 @@ const initialValues: IProjectFormValues = {
 };
 
 const ProjectFormPage: React.FC = () => {
-  const handleSubmit = async (props: any) => {
+  const handleSubmit = async (props: IProjectFormValues) => {
     const { startDate, endDate, name, cost, description } = props;
     const formatStartDate = formatDateRequest(startDate);
     const formatDeadline = formatDateRequest(endDate);
@@ -26,7 +26,7 @@ const ProjectFormPage: React.FC = () => {
     formData.append('project_name', name);
     formData.append('start_date', formatStartDate);
     formData.append('end_date', formatDeadline);
-    formData.append('cost', cost);
+    formData.append('cost', cost.toString());
     formData.append('description', description);
     formData.append('manager', 'cdf54f90-a236-4d39-aa8d-dc53a981d8d5');
 

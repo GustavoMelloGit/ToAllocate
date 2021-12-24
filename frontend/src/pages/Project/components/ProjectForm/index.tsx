@@ -3,7 +3,6 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AdminButtonComponent } from '../../../../components';
 import { formatCPF } from '../../../../shared/helpers/formatters';
-import { AdminActionWrapper } from '../../../styles';
 import { MyInput, MyTextArea } from './components';
 import ImageUploadComponent from './components/ImageUpload';
 import { ContentWrapper, Form, FormInputsWrapper } from './styles';
@@ -40,9 +39,11 @@ const ProjectForm: React.FC<IProjectFormProps> = (props) => {
       setManagerCPF(formatCPF(text));
     }
   };
-  const handleCancel = () => {
+  const handleCancel = (e: FormEvent) => {
+    e.preventDefault();
     navigate(-1);
   };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (
@@ -92,12 +93,10 @@ const ProjectForm: React.FC<IProjectFormProps> = (props) => {
             CPF do gerente*
           </MyInput>
           <MyTextArea onChangeText={setDescription}>Descrição*</MyTextArea>
-          <AdminActionWrapper>
-            <AdminButtonComponent onClick={handleCancel}>
-              Cancelar
-            </AdminButtonComponent>
-            <AdminButtonComponent type='submit'>Salvar</AdminButtonComponent>
-          </AdminActionWrapper>
+          <AdminButtonComponent onClick={handleCancel}>
+            Cancelar
+          </AdminButtonComponent>
+          <AdminButtonComponent type='submit'>Salvar</AdminButtonComponent>
         </Form>
       </ContentWrapper>
     </FormInputsWrapper>
