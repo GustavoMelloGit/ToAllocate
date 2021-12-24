@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { AdminButtonComponent, AppLayoutComponent } from '../../components';
-import api from '../../services/api';
-import { AdminActionWrapper } from '../styles';
+import { AdminButtonComponent, AppLayoutComponent } from '../../../components';
+import api from '../../../services/api';
+import { AdminActionWrapper } from '../../styles';
 import { MyInput, MyTextArea } from './components';
 import ImageUploadComponent from './components/ImageUpload';
 import {
@@ -12,7 +12,7 @@ import {
   ProjectContainer,
   ProjectForm,
 } from './styles';
-import { formatCPF, formatDate } from '../../shared/helpers/formatters';
+import { formatCPF, formatDate } from '../../../shared/helpers/formatters';
 
 const ProjectFormPage: React.FC = (props) => {
   const [name, setName] = useState('');
@@ -26,7 +26,7 @@ const ProjectFormPage: React.FC = (props) => {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    navigate('/home');
+    navigate(-1);
   };
 
   const handleCPFChange = (text: string) => {

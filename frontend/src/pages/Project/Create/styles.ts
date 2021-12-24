@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Breakpoints from '../../shared/constants/Breakpoints';
+import Breakpoints from '../../../shared/constants/Breakpoints';
 
 export const ProjectContainer = styled.section`
   width: 100%;
@@ -7,7 +7,7 @@ export const ProjectContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
 `;
 export const ContentWrapper = styled.div`
   display: flex;

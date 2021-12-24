@@ -30,3 +30,10 @@ export const HeaderContainer = styled.header`
     line-height: 10vh;
   }
 `;
+
+export const Actions = styled.div`
+  width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+`;
