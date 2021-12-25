@@ -1,3 +1,4 @@
 node_modules
 .env
-fakedata
+tmp/*
+!tmp/.gitkeep

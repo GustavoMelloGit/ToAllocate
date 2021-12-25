@@ -29,14 +29,16 @@ export function deleteObjects() {
           reject(err);
         } else {
           if (data.Contents) {
+            let cont = 0;
             const keys = data.Contents.map((content) => content.Key);
             const promises = keys.map((key) => {
               if (key !== process.env.DEFAULT_PROJECT_IMAGE) {
                 deleteObject(process.env.BUCKET_NAME as string, key as string);
+                cont++;
               }
             });
             await Promise.all(promises);
-            resolve(data);
+            resolve(cont);
           }
         }
       }

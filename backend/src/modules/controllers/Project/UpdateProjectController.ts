@@ -13,7 +13,8 @@ class UpdateProjectController {
       return response.status(400).json({ error: "No data provided" });
     }
 
-    const { project_name, end_date, cost, description, manager } = request.body;
+    const { project_name, end_date, cost, description, manager, employees } =
+      request.body;
 
     const updateProjectService = new UpdateProjectService();
 
@@ -23,8 +24,9 @@ class UpdateProjectController {
       end_date,
       cost,
       description,
-      manager,
-      images,
+      manager: manager ? manager.replace(/[!.-]/g, "") : undefined,
+      employees: typeof employees === "string" ? [employees] : employees,
+      images: JSON.stringify(images) != "{}" ? images : undefined,
     });
 
     return response.status(200).json(updatedProject);

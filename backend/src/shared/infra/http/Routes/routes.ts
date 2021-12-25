@@ -47,7 +47,6 @@ routes.get("/drop", async (request: Request, response: Response) => {
     await cursor.query(`
     DROP TABLE works_on;
     DROP TABLE token;
-    DROP TABLE project_images;
     DROP TABLE project;
     DROP TABLE employee;
     `);
@@ -57,7 +56,7 @@ routes.get("/drop", async (request: Request, response: Response) => {
   }
 });
 
-routes.get("/delete-objects", (request: Request, response: Response) => {
-  deleteObjects();
-  return response.json("deleted");
+routes.get("/delete-objects", async (request: Request, response: Response) => {
+  const a = await deleteObjects();
+  return response.json(`deleted ${a} objects`);
 });

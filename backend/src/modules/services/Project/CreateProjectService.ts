@@ -1,8 +1,8 @@
 import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
-import { convert, diffBetweenDates, validateDate } from "../../../utils/date";
-import { deleteObject } from "../../../utils/deleteObject";
+import { convert, validateDate } from "../../../utils/date";
+import { validateCpf } from "../../../utils/utils";
 
 interface IProjectRequest {
   project_name: string;
@@ -11,15 +11,25 @@ interface IProjectRequest {
   cost: Number;
   description: string;
   manager: string;
-  images_url:
-    | {
-        [fieldname: string]: Express.Multer.File[];
-      }
-    | Express.Multer.File[]
-    | undefined;
+  employees: string[];
+  images: any | undefined;
 }
 
 class CreateProjectService {
+  private verifyFields(obj: any) {
+    for (const key in obj) {
+      if (
+        key !== "images" &&
+        key !== "employees" &&
+        typeof obj[key] !== "string"
+      ) {
+        if (obj[key] === undefined)
+          throw new Error(`O atributo ${key} é obrigatório`);
+        throw new Error(`Só é permitido 1 valor para o atributo ${key}`);
+      }
+    }
+  }
+
   async execute({
     project_name,
     start_date,
@@ -27,111 +37,163 @@ class CreateProjectService {
     cost,
     description,
     manager,
-    images_url,
+    employees,
+    images,
   }: IProjectRequest) {
-    if (!project_name) throw new AppError("Project name is required");
+    const obj = Object.assign({}, arguments[0]);
 
-    const projectAlreadyExists = await cursor.query(
-      `SELECT * FROM project WHERE project_name = '${project_name}'`
+    this.verifyFields(obj);
+
+    // verify if exists a project with the same name
+    const { rows: project } = await cursor.query(
+      `SELECT project_name, manager FROM project WHERE project_name = '${project_name}'`
     );
 
-    if (projectAlreadyExists.rowCount > 0)
-      throw new AppError(
-        `There is already a project with the name ${project_name}`
-      );
+    if (project.length > 0)
+      throw new AppError(`Já existe um projeto com o nome '${project_name}'`);
 
-    const start_date_converted = convert(start_date);
-    const end_date_converted = convert(end_date);
+    // check the dates
 
     if (!validateDate(start_date))
       throw new AppError(
-        "Start date is invalid. Please use the format dd-mm-yyyy"
+        "A data de início é inválida. Digite no formato correto: dd-mm-yyyy"
       );
 
     if (!validateDate(end_date))
       throw new AppError(
-        "End date is invalid. Plese use the format dd-mm-yyyy"
+        "A data de fim é inválida. Digite no formato correto: dd-mm-yyyy"
       );
 
-    if (diffBetweenDates(start_date_converted, end_date_converted) <= 0)
-      throw new AppError("Start date must be before end date");
-
-    if (!cost) throw new AppError("Cost is required");
-
-    if (cost < 0) throw new AppError("Cost must be greater than 0");
-
-    if (description.length > 500)
-      throw new AppError("Description must be less than 500 characters");
-
-    if (!manager) throw new AppError("Manager is required");
-
-    const managerAlreadyExists = await cursor.query(
-      `SELECT * FROM employee WHERE id = '${manager}'`
-    );
-
-    if (managerAlreadyExists.rowCount == 0)
-      throw new AppError("Dont exist any employee with this id: " + manager);
-
-    const project_id = v4();
-
-    let images_url_array: Express.Multer.File[] = [];
-
-    if (Array.isArray(images_url)) {
-      images_url_array = images_url;
+    if (convert(start_date) >= convert(end_date)) {
+      throw new AppError("A data de início deve ser menor que a data de fim");
     }
 
-    let values = ``;
-    images_url_array.forEach((image) => {
-      values += `'${image.location}', `;
-    });
+    // check the cost
+    if (cost <= 0)
+      throw new AppError("O custo do projeto deve ser maior que 0");
 
+    // check the description
+    if (description.length > 500)
+      throw new AppError("A descrição não pode ter mais de 500 caracteres");
+
+    // check the manager
+    if (!validateCpf(manager))
+      throw new AppError("O CPF do gerente é inválido");
+
+    const { rows: _manager } = await cursor.query(
+      `SELECT cpf FROM employee WHERE cpf = '${manager}'`
+    );
+
+    if (_manager.length == 0)
+      throw new AppError(
+        `Nenhum funcionário com o CPF ${manager} foi encontrado`
+      );
+
+    let values = ``;
+
+    if (images) {
+      const { file: files } = images;
+      files.forEach((image: any) => {
+        values += `'${
+          process.env.STORAGE_TYPE == "s3" ? images.location : image.path
+        }', `;
+      });
+    }
     values =
       values.length > 0
         ? values.slice(0, -2)
         : `'` + (process.env.DEFAULT_PROJECT_IMAGE_URL as string) + `'`;
 
+    const project_id = v4();
+
+    // check if the employees exists
+    let insert_employees_query = ``;
+    for (let i = 0; i < employees.length; i++) {
+      let employee_cpf = employees[i].replace(/[!.-]/g, "");
+      if (!validateCpf(employee_cpf))
+        throw new AppError(`O CPF do funcionário ${employees[i]} é inválido`);
+
+      if (employee_cpf !== manager) {
+        const { rows: _employee } = await cursor.query(
+          `SELECT cpf FROM employee WHERE cpf = '${employee_cpf}'`
+        );
+        if (_employee.length == 0)
+          throw new AppError(
+            `No campo employees, o CPF '${employee_cpf}' não foi encontrado`
+          );
+
+        insert_employees_query += `INSERT INTO works_on (employee_cpf, project_id, ocuppation) VALUES ('${employee_cpf}', '${project_id}', 'developer');`;
+      }
+    }
+
+    //create the project
+    let new_project: any;
     try {
-      const { rows } = await cursor.query(`
-      INSERT INTO project (
-        project_id,
-        project_name,
-        start_date,
-        end_date,
-        cost,
-        description,
-        manager,
-        images
-      ) VALUES (
-        '${project_id}',
-        '${project_name}',
-        '${start_date}',
-        '${end_date}',
-        '${cost}',
-        '${description}',
-        '${manager}',
-        ARRAY[${values}]
-      ) RETURNING *
+      const {
+        rows: [proj],
+      } = await cursor.query(`
+        INSERT INTO project (
+          project_id,
+          project_name,
+          start_date,
+          end_date,
+          cost,
+          description,
+          manager,
+          images
+        ) VALUES (
+          '${project_id}',
+          '${project_name}',
+          '${start_date}',
+          '${end_date}',
+          ${cost},
+          '${description}',
+          '${manager}',
+          ARRAY[${values}]
+        ) RETURNING *;
       `);
 
+      new_project = proj;
+    } catch (error) {
+      console.log(error);
+      throw new AppError("Ocorreu um erro durante a criação do projeto");
+    }
+
+    try {
       await cursor.query(`
         INSERT INTO works_on (
-          employee_id,
-          project_id
+          employee_cpf, 
+          project_id, 
+          ocuppation
         ) VALUES (
-          '${manager}',
-          '${project_id}'
-        )
+          '${manager}', 
+          '${project_id}', 
+          'manager'
+        );
       `);
-
-      return rows[0];
     } catch (error) {
-      if (images_url_array.length > 0) {
-        images_url_array.forEach(async (image) => {
-          await deleteObject(process.env.BUCKET_NAME as string, image.key);
-        });
-      }
-      throw new AppError("Error during project creation");
+      console.log(error);
+      await cursor.query(
+        `DELETE FROM project WHERE project_id = '${project_id}'`
+      );
+
+      throw new AppError(
+        "Ocorreu um erro ao adicionar o gerente ao projeto. Não foi possível criar o projeto. Tentar novamente."
+      );
     }
+
+    // insert employees in works_on
+    try {
+      await cursor.query(insert_employees_query);
+    } catch (error) {
+      await cursor.query(
+        `DELETE FROM project WHERE project_id = '${project_id}'`
+      );
+      throw new AppError(
+        "Ocorreu ao inserir os funcionários no projeto, o projeto foi excluído, tente novamente"
+      );
+    }
+    return new_project;
   }
 }
 

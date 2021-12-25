@@ -3,14 +3,14 @@ import CreateEmployeeService from "../../services/Employees/CreateEmployeeServic
 
 class CreateEmployeeController {
   async handle(request: Request, response: Response) {
-    const { Fname, Lname, isadmin, role, email, password } = request.body;
+    const { Fname, Lname, cpf, role, email, password } = request.body;
 
     const createEmployeeService = new CreateEmployeeService();
 
     const employee = await createEmployeeService.execute({
       Fname,
       Lname,
-      isadmin,
+      cpf: cpf.replace(/[!.-]/g, ""),
       role,
       email,
       password,

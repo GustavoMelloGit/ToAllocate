@@ -2,67 +2,60 @@ import { hash } from "bcryptjs";
 import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
+import { validateCpf, validateEmail } from "../../../utils/utils";
 
 interface IEmployeeRequest {
   Fname: string;
   Lname: string;
-  isadmin?: false;
-  role: string;
+  cpf: string;
+  role?: string;
   email: string;
   password: string;
 }
 
 class CreateEmployeeService {
-  private validateEmail(email: string) {
-    const re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
-
   async execute({
     Fname,
     Lname,
-    isadmin,
+    cpf,
     role,
     email,
     password,
   }: IEmployeeRequest) {
-    if (!email) throw new Error("Email is required");
+    if (!email) throw new AppError("Email is required");
 
-    if (!this.validateEmail(email)) throw new Error("Invalid email");
+    if (!cpf) throw new AppError("CPF is required");
 
-    const emailAlreadyExists = await cursor.query(
-      `SELECT * FROM employee WHERE email = '${email}'`
+    if (!validateEmail(email)) throw new AppError("Invalid email");
+
+    const employeeAlreadyExists = await cursor.query(
+      `SELECT email, cpf FROM employee WHERE email = '${email}' OR cpf = '${cpf}'`
     );
 
-    if (emailAlreadyExists.rowCount > 0)
-      throw new Error("Email already exists");
+    if (employeeAlreadyExists.rowCount > 0) {
+      if (email == employeeAlreadyExists.rows[0].email)
+        throw new AppError(
+          `There is already an employee with the email: ${email}`
+        );
+      else
+        throw new AppError(`There is already an employee with the cpf: ${cpf}`);
+    }
+
+    if (!validateCpf(cpf)) throw new AppError("Invalid cpf");
 
     const hashPass = await hash(password, 10);
     const id = v4();
+    const query = `INSERT INTO employee (id, Fname, Lname, cpf, role, email, password) VALUES ('${id}', '${Fname}', '${Lname}', '${cpf}', '${
+      role ? role : "user"
+    }', '${email}', '${hashPass}' ) RETURNING *`;
 
     try {
-      const { rows } = await cursor.query(`
-        INSERT INTO employee (
-          id,
-          Fname,
-          Lname,
-          isAdmin,
-          role,
-          email,
-          password
-        ) VALUES (
-          '${id}',
-          '${Fname}',
-          '${Lname}',
-          '${isadmin}',
-          '${role}',
-          '${email}',
-          '${hashPass}'
-        ) RETURNING id, Fname, Lname, isAdmin, role, email, created_at, updated_at
-      `);
+      const {
+        rows: [employee],
+      } = await cursor.query(query);
 
-      return rows[0];
+      delete employee.password;
+      return employee;
     } catch (error) {
       throw new AppError("Error during creating employee");
     }

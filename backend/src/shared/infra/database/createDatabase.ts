@@ -10,8 +10,8 @@ async function createDatabase() {
       id uuid PRIMARY KEY,
       Fname varchar(255) NOT NULL,
       Lname varchar(255) NOT NULL,
-      isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
-      role varchar(255) NOT NULL,
+      cpf varchar(11) NOT NULL UNIQUE,
+      role varchar(20) NOT NULL,
       email varchar(255) NOT NULL UNIQUE,
       password varchar(64) NOT NULL, 
       created_at TIMESTAMP DEFAULT NOW(),
@@ -26,12 +26,12 @@ async function createDatabase() {
     await cursor.query(`
         CREATE TABLE IF NOT EXISTS project (
             project_id uuid PRIMARY KEY,
-            project_name varchar(255) NOT NULL UNIQUE,
+            project_name varchar(50) NOT NULL UNIQUE,
             start_date DATE NOT NULL,
             end_date DATE NOT NULL,
             cost FLOAT NOT NULL,
             description varchar(500) NOT NULL,
-            manager uuid NOT NULL,
+            manager varchar(11) NOT NULL,
             images TEXT ARRAY[3],
             created_at TIMESTAMP DEFAULT NOW(),
             updated_at TIMESTAMP DEFAULT NOW()
@@ -44,9 +44,10 @@ async function createDatabase() {
   try {
     await cursor.query(`
         CREATE TABLE IF NOT EXISTS works_on (
-            employee_id uuid NOT NULL,
+            employee_cpf varchar(11) NOT NULL,
             project_id uuid NOT NULL,
-            FOREIGN KEY (employee_id) REFERENCES employee(id) ON DELETE CASCADE,
+            ocuppation varchar(10) NOT NULL,
+            FOREIGN KEY (employee_cpf) REFERENCES employee(cpf) ON DELETE CASCADE,
             FOREIGN KEY (project_id) REFERENCES project(project_id) ON DELETE CASCADE
         )
     `);
@@ -58,7 +59,7 @@ async function createDatabase() {
     await cursor.query(`
         CREATE TABLE IF NOT EXISTS token (
             employee_id uuid NOT NULL,
-            token VARCHAR(300),
+            token varchar(300),
             FOREIGN KEY (employee_id) REFERENCES employee(id) ON DELETE CASCADE
         )
   `);
@@ -73,7 +74,7 @@ async function createDatabase() {
       id,
       Fname,
       Lname,
-      isAdmin,
+      cpf,
       role,
       email,
       password        
@@ -81,8 +82,8 @@ async function createDatabase() {
       '${v4()}',
       'Admin',
       'Admin',
-      true,
-      'manager',
+      '12345678912',
+      'admin',
       'admin@admin.com',
       '${hashSync("admin_password", 10)}'
   ) ON CONFLICT DO NOTHING; 

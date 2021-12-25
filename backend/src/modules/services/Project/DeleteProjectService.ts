@@ -15,10 +15,12 @@ class DeleteProjectService {
       images.push(image.substring(image.lastIndexOf("/") + 1));
     });
 
-    images.forEach(async (image: string) => {
-      if (image !== process.env.DEFAULT_PROJECT_IMAGE)
-        await deleteObject(process.env.BUCKET_NAME as string, image);
-    });
+    if (images.length > 0) {
+      images.forEach(async (image: string) => {
+        if (image !== process.env.DEFAULT_PROJECT_IMAGE)
+          await deleteObject(process.env.BUCKET_NAME as string, image);
+      });
+    }
     return `Project '${rows[0].project_name}' has been deleted`;
   }
 }
