@@ -12,6 +12,25 @@ export const UploadContainer = styled.div`
   align-items: center;
   justify-content: center;
   border: 2px solid ${theme.colors.gray};
+
+  > img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+`;
+
+export const ImageUploadedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  > span {
+    font-weight: bold;
+    font-size: 1.6rem;
+    color: ${theme.colors.accent};
+    margin: 0.5rem 0;
+  }
 `;
 
 export const UploadInner = styled.div`
@@ -33,8 +52,16 @@ export const ImageWrapper = styled.div`
 export const Image = styled.img`
   width: 40rem;
 `;
-
-export const Text = styled.span`
-  font-size: 2rem;
+export const FileInput = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.7rem;
   color: ${theme.colors.accent};
+  text-transform: capitalize;
+
+  > input {
+    display: none;
+  }
 `;
