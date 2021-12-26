@@ -108,21 +108,23 @@ class CreateProjectService {
 
     // check if the employees exists
     let insert_employees_query = ``;
-    for (let i = 0; i < employees.length; i++) {
-      let employee_cpf = employees[i].replace(/[!.-]/g, "");
-      if (!validateCpf(employee_cpf))
-        throw new AppError(`O CPF do funcionário ${employees[i]} é inválido`);
+    if (employees) {
+      for (let i = 0; i < employees.length; i++) {
+        let employee_cpf = employees[i].replace(/[!.-]/g, "");
+        if (!validateCpf(employee_cpf))
+          throw new AppError(`O CPF do funcionário ${employees[i]} é inválido`);
 
-      if (employee_cpf !== manager) {
-        const { rows: _employee } = await cursor.query(
-          `SELECT cpf FROM employee WHERE cpf = '${employee_cpf}'`
-        );
-        if (_employee.length == 0)
-          throw new AppError(
-            `No campo employees, o CPF '${employee_cpf}' não foi encontrado`
+        if (employee_cpf !== manager) {
+          const { rows: _employee } = await cursor.query(
+            `SELECT cpf FROM employee WHERE cpf = '${employee_cpf}'`
           );
+          if (_employee.length == 0)
+            throw new AppError(
+              `No campo employees, o CPF '${employee_cpf}' não foi encontrado`
+            );
 
-        insert_employees_query += `INSERT INTO works_on (employee_cpf, project_id, ocuppation) VALUES ('${employee_cpf}', '${project_id}', 'developer');`;
+          insert_employees_query += `INSERT INTO works_on (employee_cpf, project_id, ocuppation) VALUES ('${employee_cpf}', '${project_id}', 'developer');`;
+        }
       }
     }
 
