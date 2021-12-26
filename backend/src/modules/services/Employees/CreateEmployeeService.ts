@@ -43,11 +43,33 @@ class CreateEmployeeService {
 
     if (!validateCpf(cpf)) throw new AppError("Invalid cpf");
 
+    if (
+      role &&
+      role.toLocaleLowerCase() !== "admin" &&
+      role.toLocaleLowerCase() !== "user"
+    )
+      throw new AppError("Invalide role. Must be 'admin' or 'user'");
+
     const hashPass = await hash(password, 10);
     const id = v4();
-    const query = `INSERT INTO employee (id, Fname, Lname, cpf, role, email, password) VALUES ('${id}', '${Fname}', '${Lname}', '${cpf}', '${
-      role ? role : "user"
-    }', '${email}', '${hashPass}' ) RETURNING *`;
+    const query = `
+    INSERT INTO employee (
+      id, 
+      Fname, 
+      Lname, 
+      cpf, 
+      role, 
+      email, 
+      password
+    ) VALUES (
+      '${id}', 
+      '${Fname}', 
+      '${Lname}', 
+      '${cpf}', 
+      '${role ? role : "user"}', 
+      '${email}', 
+      '${hashPass}' 
+    ) RETURNING *`;
 
     try {
       const {

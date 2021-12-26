@@ -30,8 +30,6 @@ routes.post(
   multer(multerConfig).single("file"),
   async (request, response) => {
     if (request.file) {
-      const { originalname, size, key, location } = request.file;
-      console.log(originalname, size, key, location);
       return response.json(request.file);
     }
     return response.json({ error: "No file provided" });

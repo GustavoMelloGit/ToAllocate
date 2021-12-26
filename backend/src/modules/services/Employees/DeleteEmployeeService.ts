@@ -3,13 +3,13 @@ import { cursor } from "../../../utils/cursor";
 
 class DeleteEmployeeService {
   async execute(id: string) {
-    const employeeProjects = await cursor.query(`
-        SELECT project_name FROM project WHERE manager = '${id}'
+    const { rows: employeeProjects } = await cursor.query(` 
+        SELECT p.project_name FROM employee e, project p WHERE id = '${id}' AND e.cpf = p.manager;
     `);
 
-    if (employeeProjects.rowCount > 0) {
+    if (employeeProjects.length > 0) {
       let projectsNames: any = [];
-      employeeProjects.rows.forEach((row) => {
+      employeeProjects.forEach((row) => {
         projectsNames.push(row.project_name);
       });
       throw new AppError(
@@ -21,7 +21,7 @@ class DeleteEmployeeService {
     }
 
     const { rows } = await cursor.query(
-      `DELETE FROM employee WHERE id = '${id}' RETURNING *`
+      `DELETE FROM employee WHERE id = '${id}' RETURNING CONCAT(Fname, ' ', Lname) as name;`
     );
 
     if (rows.length === 0) throw new AppError("Employee not found");

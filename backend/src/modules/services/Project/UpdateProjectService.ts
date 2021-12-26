@@ -162,7 +162,6 @@ class UpdateProjectService {
       }
 
       if (_project.images_count < 3 && images_in_request > 0) {
-        console.log("entrei no if");
         let tmp = ``;
         files.forEach((image: any) => {
           tmp += `'${

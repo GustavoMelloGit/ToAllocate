@@ -155,7 +155,6 @@ class CreateProjectService {
 
       new_project = proj;
     } catch (error) {
-      console.log(error);
       throw new AppError("Ocorreu um erro durante a criação do projeto");
     }
 
@@ -172,7 +171,6 @@ class CreateProjectService {
         );
       `);
     } catch (error) {
-      console.log(error);
       await cursor.query(
         `DELETE FROM project WHERE project_id = '${project_id}'`
       );
