@@ -1,8 +1,7 @@
 import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
-import { convert, validateDate } from "../../../utils/date";
-import { validateCpf } from "../../../utils/utils";
+import { convert, validateCpf, validateDate } from "../../../utils/utils";
 
 interface IProjectRequest {
   project_name: string;

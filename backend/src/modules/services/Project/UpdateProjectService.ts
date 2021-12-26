@@ -1,7 +1,6 @@
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
-import { convert, validateDate } from "../../../utils/date";
-import { validateCpf } from "../../../utils/utils";
+import { convert, validateCpf, validateDate } from "../../../utils/utils";
 
 export interface IUpdateProject {
   project_id: string;
