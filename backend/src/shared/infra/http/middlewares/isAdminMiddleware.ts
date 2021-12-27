@@ -15,9 +15,9 @@ export async function isAdminMiddleware(
   );
 
   if (employee.role !== "admin") {
-    return response
-      .status(401)
-      .json({ message: "This action require admin privilege" });
+    return response.status(401).json({
+      message: "Essa ação só pode ser realizado por um usuário admin",
+    });
   }
 
   return next();

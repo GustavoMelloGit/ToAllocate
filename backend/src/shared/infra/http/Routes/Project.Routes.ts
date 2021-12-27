@@ -23,7 +23,7 @@ const findOneProjectController = new FindOneProjectController();
 
 const routes = Router();
 
-routes.get("/projects", getAllProjectsController.handle);
+routes.get("/projects", isAuthenticated, getAllProjectsController.handle);
 
 routes.get(
   "/project/:project_id",

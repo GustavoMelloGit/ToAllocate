@@ -1,6 +1,6 @@
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
-import { deleteObject } from "../../../utils/deleteObject";
+import { deleteObjects } from "../../../utils/deleteFromS3";
 
 class DeleteProjectService {
   async execute(project_id: string) {
@@ -10,18 +10,12 @@ class DeleteProjectService {
 
     if (rows.length == 0) throw new AppError("Cannot find project", 404);
 
-    const images: any[] = [];
-    rows[0].images.forEach((image: any) => {
-      images.push(image.substring(image.lastIndexOf("/") + 1));
-    });
-
-    if (images.length > 0) {
-      images.forEach(async (image: string) => {
-        if (image !== process.env.DEFAULT_PROJECT_IMAGE)
-          await deleteObject(process.env.BUCKET_NAME as string, image);
-      });
+    if (rows[0].images.length > 0 && process.env.STORAGE_TYPE == "s3") {
+      const images = rows[0].images;
+      deleteObjects(process.env.BUCKET_NAME as string, images);
     }
-    return `Project '${rows[0].project_name}' has been deleted`;
+
+    return `O projeto ${rows[0].project_name} foi deletado com sucesso`;
   }
 }
 

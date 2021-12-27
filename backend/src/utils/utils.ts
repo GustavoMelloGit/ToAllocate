@@ -52,6 +52,21 @@ export function validateDate(date: string) {
   return true;
 }
 
+export function getFiles(images: any) {
+  const imgs: { key: string; url: string }[] = [];
+  if (!images) return imgs;
+  const { file: files } = images;
+
+  files.forEach((file: any) => {
+    imgs.push({
+      key: file.key,
+      url: process.env.STORAGE_TYPE == "s3" ? file.location : file.path,
+    });
+  });
+
+  return imgs;
+}
+
 export const createProjectFields = [
   {
     name: "project_name",

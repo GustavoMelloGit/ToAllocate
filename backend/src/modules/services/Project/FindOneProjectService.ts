@@ -5,7 +5,7 @@ import { validateUuid } from "../../../utils/utils";
 class FindOneProjectService {
   async execute(project_id: string) {
     if (!validateUuid(project_id)) {
-      throw new AppError("Invalid project id");
+      throw new AppError("Id de projeto inválido", 400);
     }
 
     const {
@@ -18,17 +18,17 @@ class FindOneProjectService {
         p.end_date,
         p.cost,
         p.description,
+        p.images,
         p.created_at,
         p.updated_at
       FROM 
         project p, works_on e 
       WHERE p.project_id = '${project_id}' AND p.project_id = e.project_id 
-      GROUP BY p.project_id
-      ORDER BY p.cost
+      GROUP BY p.project_id;
     `);
 
     if (!project) {
-      throw new AppError("Project not found");
+      throw new AppError("Projeto não encontrado", 404);
     }
 
     const { rows: employees } = await cursor.query(`

@@ -13,9 +13,9 @@ class DeleteEmployeeService {
         projectsNames.push(row.project_name);
       });
       throw new AppError(
-        `The employee is a manager in the following project(s): ${projectsNames.join(
+        `O funcionário não pode ser deletado pois ele é gerente no(s) projeto(s): ${projectsNames.join(
           ", "
-        )}. Please, update the project(s) manager before deleting the employee.`,
+        )}. Para deletar o funcionário, é necessário alterar o gerente dos respectivos projetos.`,
         400
       );
     }
@@ -24,7 +24,8 @@ class DeleteEmployeeService {
       `DELETE FROM employee WHERE id = '${id}' RETURNING CONCAT(Fname, ' ', Lname) as name;`
     );
 
-    if (rows.length === 0) throw new AppError("Employee not found");
+    if (rows.length === 0)
+      throw new AppError("Funcionário não encontrado", 404);
 
     return rows[0];
   }
