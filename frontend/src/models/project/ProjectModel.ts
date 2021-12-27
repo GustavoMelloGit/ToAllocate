@@ -1,10 +1,15 @@
-export interface IProjectModel {
-  id: string;
+export interface IProjectEmployeeModel {
   name: string;
+  occupation: string;
+}
+export interface IProjectModel {
+  project_id: string;
+  project_name: string;
   description: string;
-  image: string[];
-  start_date: Date;
-  end_date: Date;
+  images: string[];
+  start_date: string;
+  end_date: string;
   cost: number;
   manager: string;
+  employees: IProjectEmployeeModel[];
 }

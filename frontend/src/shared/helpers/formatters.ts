@@ -7,6 +7,9 @@ export const formatDateRequest = (date: string) => {
   return `${arrayOfDate[2]}-${arrayOfDate[1]}-${arrayOfDate[0]}`;
 };
 
-export const formatDate = (date: Date) => {
-  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+export const formatDate = (timestamp: string) => {
+  const date = new Date(timestamp);
+  return `${date.getDate()}/${('0' + (date.getMonth() + 1)).slice(
+    -2
+  )}/${date.getFullYear()}`;
 };

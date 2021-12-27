@@ -6,7 +6,7 @@ interface IProjectItemStyles {
   isReverse: boolean;
 }
 
-export const ProjectItemContainer = styled.div`
+export const ProjectItemContainer = styled.li`
   width: 100%;
   display: flex;
   align-items: center;
@@ -16,6 +16,7 @@ export const ProjectItemContainer = styled.div`
 export const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
+  max-width: 700px;
   color: ${theme.colors.accent};
   margin: 3rem 0;
   cursor: pointer;

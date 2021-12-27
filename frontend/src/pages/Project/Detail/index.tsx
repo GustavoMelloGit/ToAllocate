@@ -1,5 +1,5 @@
 import { ActionButtonsWrapper, HomeContainer } from './styles';
-import { BiMenuAltRight, BiSearch } from 'react-icons/bi';
+import { BiMenuAltRight } from 'react-icons/bi';
 import {
   ButtonComponent,
   ProjectDetailComponent,
@@ -8,37 +8,49 @@ import {
 } from '../../../components';
 import useAuth from '../../../hooks/useAuth';
 import { AdminActionWrapper } from '../../styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { IProjectModel } from '../../../models/project/ProjectModel';
+import { useEffect, useState } from 'react';
+import api from '../../../services/api';
 
 export default function ProjectDetail(): JSX.Element {
+  const [project, setProject] = useState<IProjectModel>({} as IProjectModel);
   const auth = useAuth();
   const navigate = useNavigate();
   const { user } = auth;
+  const { uuid } = useParams();
 
-  const handleCreateProject = (): void => {
-    navigate('/project');
+  useEffect(() => {
+    const getDataById = async () => {
+      try {
+        const response = await api.get(`/project/${uuid}`);
+        console.log(response.data);
+        setProject(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getDataById();
+  }, [uuid]);
+
+  const handleGoBack = () => {
+    navigate(-1);
   };
 
   return (
     <AppLayoutComponent>
       <HomeContainer>
         <ActionButtonsWrapper>
-          <ButtonComponent>
+          <ButtonComponent onClick={handleGoBack}>
             <BiMenuAltRight className='icon' />
           </ButtonComponent>
-          {user?.isadmin && (
+          {user?.role === 'admin' && (
             <AdminActionWrapper>
-              <AdminButtonComponent onClick={handleCreateProject}>
-                Criar
-              </AdminButtonComponent>
               <AdminButtonComponent>Editar</AdminButtonComponent>
             </AdminActionWrapper>
           )}
-          <ButtonComponent>
-            <BiSearch className='icon' />
-          </ButtonComponent>
         </ActionButtonsWrapper>
-        <ProjectDetailComponent />
+        <ProjectDetailComponent project={project} />
       </HomeContainer>
     </AppLayoutComponent>
   );

@@ -5,7 +5,13 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 100%;
+  max-width: 400px;
+  img {
+    width: 100%;
+  }
   @media screen and (max-width: ${Breakpoints.sm}px) {
     img {
       height: 200px;

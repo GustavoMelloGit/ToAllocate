@@ -4,5 +4,4 @@ export interface IEmployeeModel {
   Lname: string;
   role: string;
   avatar?: string;
-  isadmin: boolean;
 }

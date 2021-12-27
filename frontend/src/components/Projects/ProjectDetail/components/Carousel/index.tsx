@@ -38,7 +38,7 @@ const CarouselComponent: React.FC<ICarouselComponent> = (
       <Carousel
         value={images}
         itemTemplate={ItemTemplate}
-        numVisible={3}
+        numVisible={2}
         numScroll={1}
         orientation='horizontal'
         indicatorsContentClassName='indicators'

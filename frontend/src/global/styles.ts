@@ -14,6 +14,8 @@ const GlobalStyle = createGlobalStyle`
         }
         button{
             cursor: pointer;
+            border: none;
+            background: none;
             :hover{
                 opacity: 0.7;
             }
