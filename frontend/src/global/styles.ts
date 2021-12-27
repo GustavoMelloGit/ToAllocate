@@ -18,6 +18,9 @@ const GlobalStyle = createGlobalStyle`
                 opacity: 0.7;
             }
         }
+        .pointer {
+            cursor: pointer;
+        }
     }
     html{
         font-size: 62.5%;

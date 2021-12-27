@@ -1,6 +1,8 @@
 import React from 'react';
+import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { AdminButtonComponent, AppLayoutComponent } from '../../../components';
+import theme from '../../../global/theme';
 import useAuth from '../../../hooks/useAuth';
 import { DUMMY_PROJECTS } from '../../../mocks/projects';
 import { AdminActionWrapper } from '../../styles';
@@ -25,7 +27,13 @@ const ProjectsList: React.FC = (props) => {
             <AdminButtonComponent onClick={handleCreateProject}>
               Criar
             </AdminButtonComponent>
-            <AdminButtonComponent>Editar</AdminButtonComponent>
+            <button>
+              <BiSearchAlt
+                size={30}
+                color={theme.colors.accent}
+                className='pointer'
+              />
+            </button>
           </AdminActionWrapper>
         )}
         {DUMMY_PROJECTS.map((project, index) => (

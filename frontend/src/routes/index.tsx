@@ -10,7 +10,7 @@ export default function AppRoutes(): JSX.Element {
     <Routes>
       <Route path='/' element={<LoginPage />} />
       <Route
-        path='/home'
+        path='/project/:uuid'
         element={
           <ProtectedRoute>
             <ProjectDetail />
@@ -34,7 +34,7 @@ export default function AppRoutes(): JSX.Element {
         }
       />
       <Route
-        path='/project/:uuid'
+        path='/project/:uuid/edit'
         element={
           <ProtectedRoute>
             <ProjectFormPage />
