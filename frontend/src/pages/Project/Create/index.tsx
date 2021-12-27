@@ -4,21 +4,36 @@ import { ProjectContainer } from './styles';
 import { formatDateRequest } from '../../../shared/helpers/formatters';
 import ProjectForm, { IProjectFormValues } from '../components/ProjectForm';
 import { AppLayoutComponent } from '../../../components';
+import { useEffect, useState } from 'react';
+import { IEmployeeModel } from '../../../models/user/employee';
+import { useNavigate } from 'react-router-dom';
 
 const initialValues: IProjectFormValues = {
   id: '',
   name: '',
   description: '',
-  image: [],
   endDate: '',
   startDate: '',
   cost: 0,
   manager: '',
+  images: {} as FileList,
 };
 
 const ProjectFormPage: React.FC = () => {
+  const [employees, setEmployees] = useState<IEmployeeModel[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getEmployees = async () => {
+      const response = await api.get('/employees');
+      setEmployees(response.data.employees);
+    };
+    getEmployees();
+  }, []);
+
   const handleSubmit = async (props: IProjectFormValues) => {
-    const { startDate, endDate, name, cost, description } = props;
+    const { startDate, endDate, name, cost, description, manager, images } =
+      props;
     const formatStartDate = formatDateRequest(startDate);
     const formatDeadline = formatDateRequest(endDate);
     const formData = new FormData();
@@ -28,12 +43,15 @@ const ProjectFormPage: React.FC = () => {
     formData.append('end_date', formatDeadline);
     formData.append('cost', cost.toString());
     formData.append('description', description);
-    formData.append('manager', 'cdf54f90-a236-4d39-aa8d-dc53a981d8d5');
+    formData.append('manager', manager);
+    for (let i = 0; i < images.length; i++) {
+      formData.append('file', images[i]);
+    }
 
-    formData.forEach((key) => console.log(key));
     try {
       await api.post('/create-project', formData);
       toast.success('Projeto cadastrado com sucesso!');
+      navigate(-1);
     } catch (e) {
       console.log(e);
       toast.error('Erro ao criar projeto!');
@@ -43,7 +61,11 @@ const ProjectFormPage: React.FC = () => {
   return (
     <AppLayoutComponent>
       <ProjectContainer>
-        <ProjectForm onSubmit={handleSubmit} initialValues={initialValues} />
+        <ProjectForm
+          onSubmit={handleSubmit}
+          initialValues={initialValues}
+          employees={employees}
+        />
       </ProjectContainer>
     </AppLayoutComponent>
   );

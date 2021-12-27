@@ -2,29 +2,33 @@ import React, { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AdminButtonComponent } from '../../../../components';
+import { IEmployeeModel } from '../../../../models/user/employee';
 import { formatCPF } from '../../../../shared/helpers/formatters';
 import { MyInput, MyTextArea } from './components';
 import ImageUploadComponent from './components/ImageUpload';
+import MySelect from './components/Select';
 import { ContentWrapper, Form, FormInputsWrapper } from './styles';
 
 export interface IProjectFormValues {
   id: string;
   name: string;
   description: string;
-  image: string[];
   startDate: string;
   endDate: string;
   cost: number;
   manager: string;
+  images: FileList;
 }
 
 interface IProjectFormProps {
   onSubmit: (values: any) => void;
   initialValues: IProjectFormValues;
+  employees: IEmployeeModel[];
 }
 
 const ProjectForm: React.FC<IProjectFormProps> = (props) => {
-  const { onSubmit, initialValues } = props;
+  const { onSubmit, initialValues, employees } = props;
+
   const navigate = useNavigate();
   const [name, setName] = useState(initialValues.name);
   const [description, setDescription] = useState(initialValues.description);
@@ -32,13 +36,8 @@ const ProjectForm: React.FC<IProjectFormProps> = (props) => {
   const [endDate, setEndDate] = useState(initialValues.endDate);
   const [images, setImages] = useState<FileList>();
   const [cost, setCost] = useState(initialValues.cost.toString());
-  const [managerCPF, setManagerCPF] = useState(initialValues.manager);
+  const [manager, setManager] = useState(initialValues.manager);
 
-  const handleCPFChange = (text: string) => {
-    if (text.length <= 14) {
-      setManagerCPF(formatCPF(text));
-    }
-  };
   const handleCancel = (e: FormEvent) => {
     e.preventDefault();
     navigate(-1);
@@ -46,27 +45,19 @@ const ProjectForm: React.FC<IProjectFormProps> = (props) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (
-      !name ||
-      !description ||
-      !startDate ||
-      !endDate ||
-      !cost ||
-      !managerCPF
-    ) {
+    if (!name || !description || !startDate || !endDate || !cost || !manager) {
       toast.error('Preencha todos os campos!');
       return;
     }
-
     onSubmit({
       id: initialValues.id,
       name,
       description,
-      image: images,
+      images: images,
       startDate,
       endDate,
       cost,
-      manager: managerCPF,
+      manager: manager,
     });
   };
 
@@ -85,13 +76,11 @@ const ProjectForm: React.FC<IProjectFormProps> = (props) => {
           <MyInput onChangeText={setCost} type='number'>
             Valor*
           </MyInput>
-          <MyInput
-            onChangeText={handleCPFChange}
-            value={managerCPF}
-            type='text'
-          >
-            CPF do gerente*
-          </MyInput>
+          <MySelect
+            employees={employees}
+            label='Gerente*'
+            setValue={setManager}
+          />
           <MyTextArea onChangeText={setDescription}>Descrição*</MyTextArea>
           <AdminButtonComponent onClick={handleCancel}>
             Cancelar

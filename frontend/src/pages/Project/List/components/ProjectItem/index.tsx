@@ -15,7 +15,7 @@ export interface IProjectItemProps {
 
 const ProjectItem: React.FC<IProjectItemProps> = (props) => {
   const { isReverse = false, project, onClick } = props;
-  console.log(project);
+
   return (
     <ProjectItemContainer onClick={onClick}>
       <ContentWrapper>
