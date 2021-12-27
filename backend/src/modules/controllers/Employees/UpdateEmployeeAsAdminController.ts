@@ -8,15 +8,15 @@ class UpdateEmployeeAsAdminController {
     if (request.params.employee_id) employee_id = request.params.employee_id;
     else employee_id = request.employee_id;
 
-    const { isadmin } = request.body;
+    const { role } = request.body;
     const body_parsed = Object.keys(request.body);
 
     if (body_parsed.length == 0) throw new AppError("No data to update");
 
     body_parsed.forEach((key) => {
-      if (key.toLocaleLowerCase() !== "isadmin") {
+      if (key.toLocaleLowerCase() !== "role") {
         throw new AppError(
-          "Only 'isadmin' attribute can be updated by this endpoint"
+          "Apenas o atributo 'role' pode ser atualizado neste endpoint"
         );
       }
     });
@@ -25,7 +25,7 @@ class UpdateEmployeeAsAdminController {
 
     const employee = await updateEmployeeAsAdminController.execute({
       employee_id,
-      isadmin,
+      role,
     });
 
     return response.status(200).json(employee);
