@@ -5,21 +5,18 @@ import UpdateEmployeeAsAdminService from "../../services/Employees/UpdateEmploye
 class UpdateEmployeeAsAdminController {
   async handle(request: Request, response: Response) {
     let employee_id;
-    if (request.params.employee_id) {
-      employee_id = request.params.employee_id;
-    } else {
-      employee_id = request.employee_id;
-    }
+    if (request.params.employee_id) employee_id = request.params.employee_id;
+    else employee_id = request.employee_id;
 
-    const { isadmin, role } = request.body;
+    const { role } = request.body;
     const body_parsed = Object.keys(request.body);
 
     if (body_parsed.length == 0) throw new AppError("No data to update");
 
     body_parsed.forEach((key) => {
-      if (key !== "role" && key !== "isadmin") {
+      if (key.toLocaleLowerCase() !== "role") {
         throw new AppError(
-          "Only isadmin and role attributes can be updated in this route"
+          "Apenas o atributo 'role' pode ser atualizado neste endpoint"
         );
       }
     });
@@ -28,7 +25,6 @@ class UpdateEmployeeAsAdminController {
 
     const employee = await updateEmployeeAsAdminController.execute({
       employee_id,
-      isadmin,
       role,
     });
 

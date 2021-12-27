@@ -4,23 +4,25 @@ import UpdateEmployeeService from "../../services/Employees/UpdateEmployeeServic
 
 class UpdateEmployeeController {
   async handle(request: Request, response: Response) {
-    const { password } = request.body;
-    const updateEmployeeService = new UpdateEmployeeService();
-
     const body_parser = Object.keys(request.body);
 
-    if (!body_parser.length) throw new AppError("No data to update");
+    if (!body_parser.length)
+      throw new AppError("Nenhum campo para atualização foi enviado", 400);
 
     body_parser.forEach((key) => {
-      if (key !== "password") {
+      if (key.toLowerCase() !== "password") {
         throw new AppError(
-          `Invalid field: '${key}'. You can only update password`
+          `Apenas o atributo 'password' pode ser atualizado neste endpoint`
         );
       }
     });
 
+    const updateEmployeeService = new UpdateEmployeeService();
+    const { password } = request.body;
+    const { employee_id } = request;
+
     const employee = await updateEmployeeService.execute({
-      employee_id: request.employee_id,
+      employee_id,
       password,
     });
 

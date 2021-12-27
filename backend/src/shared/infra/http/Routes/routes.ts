@@ -1,10 +1,7 @@
 import { Request, Response, Router } from "express";
-import multer from "multer";
 import AuthController from "../../../../modules/controllers/AuthController";
 import { cursor } from "../../../../utils/cursor";
-import { deleteObjects } from "../../../../utils/deleteObject";
-import multerConfig from "../../../../utils/multerConfig";
-import { populateDb } from "../../../../utils/populateDb";
+import { deleteAll } from "../../../../utils/deleteFromS3";
 import EmployeeRoutes from "./Employee.Routes";
 import ProjectRoutes from "./Project.Routes";
 
@@ -18,36 +15,29 @@ routes.get("/", (request: Request, response: Response) => {
   return response.json({
     disciplina: "Banco de Dados 1",
     projeto: "ToAllocate",
-    versao: "1.0.0",
-    Alunos: ["Caio Felicio", "Gustavo Marques"],
+    alunos: [
+      {
+        nome: "Caio Felício",
+        github: "https://github.com/caiofelicio",
+      },
+      {
+        nome: "Gustavo Marques",
+        github: "https://github.com/GustavoMelloGit",
+      },
+    ],
   });
 });
 
 routes.post("/login", authController.handle);
 
-routes.post(
-  "/upload",
-  multer(multerConfig).single("file"),
-  async (request, response) => {
-    if (request.file) {
-      const { originalname, size, key, location } = request.file;
-      console.log(originalname, size, key, location);
-      return response.json(request.file);
-    }
-    return response.json({ error: "No file provided" });
-  }
-);
-
 // test route
-routes.post("/populate/:num", populateDb);
-export { routes };
 
 routes.get("/drop", async (request: Request, response: Response) => {
   try {
     await cursor.query(`
+    DROP VIEW IF EXISTS project_view;
     DROP TABLE works_on;
     DROP TABLE token;
-    DROP TABLE project_images;
     DROP TABLE project;
     DROP TABLE employee;
     `);
@@ -57,7 +47,9 @@ routes.get("/drop", async (request: Request, response: Response) => {
   }
 });
 
-routes.get("/delete-objects", (request: Request, response: Response) => {
-  deleteObjects();
-  return response.json("deleted");
+routes.get("/delete-objects", async (request: Request, response: Response) => {
+  const a = await deleteAll();
+  return response.json(`deleted ${a} objects`);
 });
+
+export { routes };

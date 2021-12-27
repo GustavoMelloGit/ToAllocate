@@ -8,14 +8,16 @@ export async function isAdminMiddleware(
 ) {
   const employee_id = request.employee_id;
 
-  const { rows: isAdmin } = await cursor.query(
-    `SELECT isAdmin FROM employee WHERE id = '${employee_id}'`
+  const {
+    rows: [employee],
+  } = await cursor.query(
+    `SELECT role FROM employee WHERE id = '${employee_id}'`
   );
 
-  if (!isAdmin[0].isadmin) {
-    return response
-      .status(401)
-      .json({ message: "This action require admin privilege" });
+  if (employee.role !== "admin") {
+    return response.status(401).json({
+      message: "Essa ação só pode ser realizado por um usuário admin",
+    });
   }
 
   return next();

@@ -1,8 +1,13 @@
 import { v4 } from "uuid";
 import AppError from "../../../shared/errors/AppError";
 import { cursor } from "../../../utils/cursor";
-import { convert, diffBetweenDates, validateDate } from "../../../utils/date";
-import { deleteObject } from "../../../utils/deleteObject";
+import { deleteFile } from "../../../utils/deleteFromS3";
+import {
+  convert,
+  getFiles,
+  validateCpf,
+  validateDate,
+} from "../../../utils/utils";
 
 interface IProjectRequest {
   project_name: string;
@@ -11,15 +16,25 @@ interface IProjectRequest {
   cost: Number;
   description: string;
   manager: string;
-  images_url:
-    | {
-        [fieldname: string]: Express.Multer.File[];
-      }
-    | Express.Multer.File[]
-    | undefined;
+  employees: string[];
+  images: any | undefined;
 }
 
 class CreateProjectService {
+  private verifyFields(obj: any) {
+    for (const key in obj) {
+      if (
+        key !== "images" &&
+        key !== "employees" &&
+        typeof obj[key] !== "string"
+      ) {
+        if (obj[key] === undefined)
+          throw new Error(`O atributo ${key} é obrigatório`);
+        throw new Error(`Só é permitido 1 valor para o atributo ${key}`);
+      }
+    }
+  }
+
   async execute({
     project_name,
     start_date,
@@ -27,110 +42,264 @@ class CreateProjectService {
     cost,
     description,
     manager,
-    images_url,
+    employees,
+    images,
   }: IProjectRequest) {
-    if (!project_name) throw new AppError("Project name is required");
+    const obj = Object.assign({}, arguments[0]);
 
-    const projectAlreadyExists = await cursor.query(
-      `SELECT * FROM project WHERE project_name = '${project_name}'`
+    this.verifyFields(obj);
+    const imgs = getFiles(images);
+
+    // verify if exists a project with the same name
+    const { rows: project } = await cursor.query(
+      `SELECT project_name, manager FROM project WHERE project_name = '${project_name}'`
     );
 
-    if (projectAlreadyExists.rowCount > 0)
+    if (project.length > 0) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+      throw new AppError(`Já existe um projeto com o nome '${project_name}'`);
+    }
+
+    // check the dates
+
+    if (!validateDate(start_date)) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
       throw new AppError(
-        `There is already a project with the name ${project_name}`
+        "A data de início é inválida. Digite no formato correto: dd-mm-yyyy"
       );
+    }
 
-    const start_date_converted = convert(start_date);
-    const end_date_converted = convert(end_date);
-
-    if (!validateDate(start_date))
+    if (!validateDate(end_date)) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
       throw new AppError(
-        "Start date is invalid. Please use the format dd-mm-yyyy"
+        "A data de fim é inválida. Digite no formato correto: dd-mm-yyyy"
       );
+    }
 
-    if (!validateDate(end_date))
-      throw new AppError(
-        "End date is invalid. Plese use the format dd-mm-yyyy"
-      );
+    if (convert(start_date) >= convert(end_date)) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+      throw new AppError("A data de início deve ser menor que a data de fim");
+    }
 
-    if (diffBetweenDates(start_date_converted, end_date_converted) <= 0)
-      throw new AppError("Start date must be before end date");
+    // check the cost
+    if (cost <= 0) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+      throw new AppError("O custo do projeto deve ser maior que 0");
+    }
 
-    if (!cost) throw new AppError("Cost is required");
+    // check the description
+    if (description.length > 500) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+      throw new AppError("A descrição não pode ter mais de 500 caracteres");
+    }
 
-    if (cost < 0) throw new AppError("Cost must be greater than 0");
+    // check the manager
+    if (!validateCpf(manager)) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+      throw new AppError("O CPF do gerente é inválido");
+    }
 
-    if (description.length > 500)
-      throw new AppError("Description must be less than 500 characters");
-
-    if (!manager) throw new AppError("Manager is required");
-
-    const managerAlreadyExists = await cursor.query(
-      `SELECT * FROM employee WHERE id = '${manager}'`
+    const { rows: _manager } = await cursor.query(
+      `SELECT cpf FROM employee WHERE cpf = '${manager}'`
     );
 
-    if (managerAlreadyExists.rowCount == 0)
-      throw new AppError("Dont exist any employee with this id: " + manager);
-
-    const project_id = v4();
-
-    let images_url_array: Express.Multer.File[] = [];
-
-    if (Array.isArray(images_url)) {
-      images_url_array = images_url;
+    if (_manager.length == 0) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+      throw new AppError(`Funcionário com o CPF ${manager} não foi encontrado`);
     }
 
     let values = ``;
-    images_url_array.forEach((image) => {
-      values += `'${image.location}', `;
-    });
 
+    if (imgs) {
+      imgs.forEach((img) => {
+        values += `'${img.url}', `;
+      });
+    }
     values =
       values.length > 0
         ? values.slice(0, -2)
         : `'` + (process.env.DEFAULT_PROJECT_IMAGE_URL as string) + `'`;
 
+    const project_id = v4();
+
+    // check if the employees exists
+    let insert_employees_query = ``;
+    if (employees) {
+      for (let i = 0; i < employees.length; i++) {
+        let employee_cpf = employees[i].replace(/[!.-]/g, "");
+        if (!validateCpf(employee_cpf)) {
+          if (imgs) {
+            imgs.forEach(async (img) => {
+              await deleteFile(img.key);
+            });
+          }
+          throw new AppError(`O CPF do funcionário ${employees[i]} é inválido`);
+        }
+
+        if (employee_cpf !== manager) {
+          const { rows: _employee } = await cursor.query(
+            `SELECT cpf FROM employee WHERE cpf = '${employee_cpf}'`
+          );
+          if (_employee.length == 0) {
+            if (imgs) {
+              imgs.forEach(async (img) => {
+                await deleteFile(img.key);
+              });
+            }
+            throw new AppError(
+              `No campo employees, o CPF '${employee_cpf}' não foi encontrado`
+            );
+          }
+
+          insert_employees_query += `INSERT INTO works_on (employee_cpf, project_id, ocuppation) VALUES ('${employee_cpf}', '${project_id}', 'developer');`;
+        }
+      }
+    }
+
+    //create the project
+    let new_project: any;
     try {
-      const { rows } = await cursor.query(`
-      INSERT INTO project (
-        project_id,
-        project_name,
-        start_date,
-        end_date,
-        cost,
-        description,
-        manager,
-        images
-      ) VALUES (
-        '${project_id}',
-        '${project_name}',
-        '${start_date}',
-        '${end_date}',
-        '${cost}',
-        '${description}',
-        '${manager}',
-        ARRAY[${values}]
-      ) RETURNING *
-      `);
-
-      await cursor.query(`
-        INSERT INTO works_on (
-          employee_id,
-          project_id
+      const {
+        rows: [proj],
+      } = await cursor.query(`
+        INSERT INTO project (
+          project_id,
+          project_name,
+          start_date,
+          end_date,
+          cost,
+          description,
+          manager,
+          images
         ) VALUES (
+          '${project_id}',
+          '${project_name}',
+          '${start_date}',
+          '${end_date}',
+          ${cost},
+          '${description}',
           '${manager}',
-          '${project_id}'
-        )
+          ARRAY[${values}]
+        ) RETURNING *;
       `);
 
-      return rows[0];
+      new_project = proj;
     } catch (error) {
-      if (images_url_array.length > 0) {
-        images_url_array.forEach(async (image) => {
-          await deleteObject(process.env.BUCKET_NAME as string, image.key);
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
         });
       }
-      throw new AppError("Error during project creation");
+      throw new AppError("Ocorreu um erro durante a criação do projeto");
+    }
+
+    try {
+      await cursor.query(`
+        INSERT INTO works_on (
+          employee_cpf,
+          project_id,
+          ocuppation
+        ) VALUES (
+          '${manager}',
+          '${project_id}',
+          'manager'
+        );
+      `);
+    } catch (error) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+
+      await cursor.query(
+        `DELETE FROM project WHERE project_id = '${project_id}'`
+      );
+
+      throw new AppError(
+        "Ocorreu um erro ao cadastrar o gerente. Não foi possível criar o projeto. Tente novamente."
+      );
+    }
+
+    // insert employees in works_on
+    try {
+      await cursor.query(insert_employees_query);
+    } catch (error) {
+      if (imgs) {
+        imgs.forEach(async (img) => {
+          await deleteFile(img.key);
+        });
+      }
+
+      await cursor.query(
+        `DELETE FROM project WHERE project_id = '${project_id}'`
+      );
+      throw new AppError(
+        "Ocorreu um erro ao cadastrar os funcionários. Não foi possível criar o projeto. Tente novamente"
+      );
+    }
+
+    try {
+      const {
+        rows: [project],
+      } = await cursor.query(`
+        SELECT 
+          p.project_id,
+          p.project_name,
+          p.description,
+          p.start_date,
+          p.end_date,
+          p.manager,
+          cast(COUNT(*) as integer) as total_employees,
+          p.cost,
+          p.images,
+          p.created_at,
+          p.updated_at
+        FROM 
+          project p,
+          works_on
+        WHERE
+          p.project_id = works_on.project_id AND
+          p.project_id = '${project_id}'
+        GROUP BY
+          p.project_id;
+      `);
+
+      return project;
+    } catch (error) {
+      return new_project;
     }
   }
 }
