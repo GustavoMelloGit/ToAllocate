@@ -4,7 +4,7 @@ import { AppLayoutComponent } from '../../../components';
 
 const EditProject: React.FC = () => {
   const { uuid } = useParams();
-  console.log(uuid);
+
   return (
     <AppLayoutComponent>
       <p>Hello World</p>
