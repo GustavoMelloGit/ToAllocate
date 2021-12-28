@@ -19,7 +19,7 @@ const initialValues: IProjectFormValues = {
   images: {} as FileList,
 };
 
-const ProjectFormPage: React.FC = () => {
+const CreateProject: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState<IEmployeeModel[]>([]);
   const navigate = useNavigate();
@@ -81,4 +81,4 @@ const ProjectFormPage: React.FC = () => {
   );
 };
 
-export default ProjectFormPage;
+export default CreateProject;

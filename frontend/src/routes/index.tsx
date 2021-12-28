@@ -1,27 +1,24 @@
 import { Route, Routes } from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute';
 import LoginPage from '../pages/Login';
-import { ProjectDetail, ProjectsList } from '../pages/Project';
-import ProjectFormPage from '../pages/Project/Create';
+import {
+  CreateProject,
+  EditProject,
+  ProjectDetailPage,
+  ProjectsList,
+} from '../pages/Project';
 import { UserRoles } from '../shared/constants/AppEnums';
 
 export default function AppRoutes(): JSX.Element {
   return (
     <Routes>
       <Route path='/' element={<LoginPage />} />
-      <Route
-        path='/project/:uuid'
-        element={
-          <ProtectedRoute>
-            <ProjectDetail />
-          </ProtectedRoute>
-        }
-      />
+
       <Route
         path='/projects/create-project'
         element={
           <ProtectedRoute role={UserRoles.ADMIN}>
-            <ProjectFormPage />
+            <CreateProject />
           </ProtectedRoute>
         }
       />
@@ -37,7 +34,15 @@ export default function AppRoutes(): JSX.Element {
         path='/project/:uuid/edit'
         element={
           <ProtectedRoute>
-            <ProjectFormPage />
+            <EditProject />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/project/:uuid'
+        element={
+          <ProtectedRoute>
+            <ProjectDetailPage />
           </ProtectedRoute>
         }
       />
