@@ -23,6 +23,13 @@ const GlobalStyle = createGlobalStyle`
         .pointer {
             cursor: pointer;
         }
+        .centered {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
     html{
         font-size: 62.5%;

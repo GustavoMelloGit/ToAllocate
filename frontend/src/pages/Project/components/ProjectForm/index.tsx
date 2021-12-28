@@ -3,10 +3,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AdminButtonComponent } from '../../../../components';
 import { IEmployeeModel } from '../../../../models/user/employee';
-import { formatCPF } from '../../../../shared/helpers/formatters';
-import { MyInput, MyTextArea } from './components';
+import { MyInput, MyTextArea, MySelect } from './components';
 import ImageUploadComponent from './components/ImageUpload';
-import MySelect from './components/Select';
 import { ContentWrapper, Form, FormInputsWrapper } from './styles';
 
 export interface IProjectFormValues {

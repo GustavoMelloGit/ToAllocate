@@ -16,6 +16,9 @@ const MySelect: React.FC<IMySelectProps> = (props) => {
     <Container>
       <InputLabel htmlFor='MySelect'>{label}</InputLabel>
       <SelectContainer id='MySelect' onChange={(e) => setValue(e.target.value)}>
+        <OptionContainer value='' disabled selected>
+          Selecione um funcionário
+        </OptionContainer>
         {employees.map((employee) => (
           <OptionContainer key={employee.id} value={employee.cpf}>
             {employee.fname} {employee.lname}

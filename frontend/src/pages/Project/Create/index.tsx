@@ -3,7 +3,7 @@ import api from '../../../services/api';
 import { ProjectContainer } from './styles';
 import { formatDateRequest } from '../../../shared/helpers/formatters';
 import ProjectForm, { IProjectFormValues } from '../components/ProjectForm';
-import { AppLayoutComponent } from '../../../components';
+import { AppLayoutComponent, LoadingComponent } from '../../../components';
 import { useEffect, useState } from 'react';
 import { IEmployeeModel } from '../../../models/user/employee';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ const initialValues: IProjectFormValues = {
 };
 
 const ProjectFormPage: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState<IEmployeeModel[]>([]);
   const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ const ProjectFormPage: React.FC = () => {
     const getEmployees = async () => {
       const response = await api.get('/employees');
       setEmployees(response.data.employees);
+      setLoading(false);
     };
     getEmployees();
   }, []);
@@ -57,6 +59,14 @@ const ProjectFormPage: React.FC = () => {
       toast.error('Erro ao criar projeto!');
     }
   };
+
+  if (loading && employees.length === 0) {
+    return (
+      <AppLayoutComponent>
+        <LoadingComponent />
+      </AppLayoutComponent>
+    );
+  }
 
   return (
     <AppLayoutComponent>

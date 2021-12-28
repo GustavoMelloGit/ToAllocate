@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { AdminButtonComponent, AppLayoutComponent } from '../../../components';
+import NotFoundComponent from '../../../components/utils/NotFound';
 import theme from '../../../global/theme';
 import useAuth from '../../../hooks/useAuth';
 // import { DUMMY_PROJECTS } from '../../../mocks/projects';
@@ -35,13 +36,6 @@ const ProjectsList: React.FC = (props) => {
     fetchProjects();
   }, []);
 
-  if (projects.length === 0) {
-    return (
-      <AppLayoutComponent>
-        <h1>Nenhum projeto encontrado</h1>
-      </AppLayoutComponent>
-    );
-  }
   return (
     <AppLayoutComponent>
       <ProjectsListContainer>
@@ -59,16 +53,20 @@ const ProjectsList: React.FC = (props) => {
             </button>
           </AdminActionWrapper>
         )}
-        <ul>
-          {projects.map((project, index) => (
-            <ProjectItem
-              key={project.project_id}
-              project={project}
-              isReverse={index % 2 === 0}
-              onClick={handleItemClick.bind(null, project.project_id)}
-            />
-          ))}
-        </ul>
+        {projects.length > 0 ? (
+          <ul>
+            {projects.map((project, index) => (
+              <ProjectItem
+                key={project.project_id}
+                project={project}
+                isReverse={index % 2 === 0}
+                onClick={handleItemClick.bind(null, project.project_id)}
+              />
+            ))}
+          </ul>
+        ) : (
+          <NotFoundComponent message='Nenhum projeto encontrado' />
+        )}
       </ProjectsListContainer>
     </AppLayoutComponent>
   );
