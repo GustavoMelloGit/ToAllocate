@@ -1,8 +1,9 @@
 export interface IEmployeeModel {
   id: string;
-  Fname: string;
-  Lname: string;
+  fname: string;
+  lname: string;
   role: string;
   avatar?: string;
-  isadmin: boolean;
+  cpf: string;
+  email: string;
 }

@@ -40,6 +40,9 @@ export const ContentHeaderWrapper = styled.div`
   h1 {
     margin: 0;
   }
+  span {
+    font-size: 1.8rem;
+  }
 
   @media screen and (max-width: ${Breakpoints.md}px) {
     align-items: center;

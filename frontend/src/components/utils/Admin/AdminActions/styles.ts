@@ -3,7 +3,7 @@ import theme from '../../../../global/theme';
 
 export const ButtonContainer = styled.button`
   background-color: ${theme.colors.accent};
-  width: 15rem;
+  min-width: 15rem;
   padding: 1rem;
   border: none;
   border-radius: 10rem;

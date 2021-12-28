@@ -1,8 +1,8 @@
-import { IEmployeeModel } from '../../../../../../models/user/employee';
+import { IProjectEmployeeModel } from '../../../../../../models/project/ProjectModel';
 import { AvatarContent, AvatarWrapper } from './styles';
 
 interface IAvatarComponent {
-  employee: IEmployeeModel;
+  employee: IProjectEmployeeModel;
 }
 
 const AvatarComponent: React.FC<IAvatarComponent> = (props) => {
@@ -11,11 +11,7 @@ const AvatarComponent: React.FC<IAvatarComponent> = (props) => {
   return (
     <AvatarWrapper>
       <AvatarContent>
-        {employee.avatar ? (
-          <img src={employee.avatar} alt={employee.Fname} />
-        ) : (
-          <h1>{employee.Fname[0]}</h1>
-        )}
+        <h1>{employee.name[0]}</h1>
       </AvatarContent>
     </AvatarWrapper>
   );

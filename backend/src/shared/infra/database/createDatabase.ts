@@ -1,7 +1,7 @@
-import { hashSync } from "bcryptjs";
-import { v4 } from "uuid";
-import { cursor } from "../../../utils/cursor";
-import AppError from "../../errors/AppError";
+import { hashSync } from 'bcryptjs';
+import { v4 } from 'uuid';
+import { cursor } from '../../../utils/cursor';
+import AppError from '../../errors/AppError';
 
 async function createDatabase() {
   try {
@@ -19,7 +19,7 @@ async function createDatabase() {
   );
 `);
   } catch (error) {
-    throw new AppError("Error during create table employee");
+    throw new AppError('Error during create table employee');
   }
 
   try {
@@ -38,7 +38,7 @@ async function createDatabase() {
         )
     `);
   } catch (error) {
-    throw new AppError("Error during create table project");
+    throw new AppError('Error during create table project');
   }
 
   try {
@@ -52,7 +52,7 @@ async function createDatabase() {
         )
     `);
   } catch (error) {
-    throw new AppError("Error during create table works_on");
+    throw new AppError('Error during create table works_on');
   }
 
   try {
@@ -64,7 +64,7 @@ async function createDatabase() {
         )
   `);
   } catch (error) {
-    throw new AppError("Error during create table token");
+    throw new AppError('Error during create table token');
   }
 
   try {
@@ -85,11 +85,12 @@ async function createDatabase() {
       '12345678912',
       'admin',
       'admin@admin.com',
-      '${hashSync("admin_password", 10)}'
+      '${hashSync('admin_password', 10)}'
   ) ON CONFLICT DO NOTHING; 
 `);
   } catch (error) {
-    throw new AppError("Error during create admin user");
+    console.log(error);
+    throw new AppError('Error during create admin user');
   }
 }
 

@@ -17,6 +17,7 @@ import {
 //Styles
 import theme from '../../global/theme';
 import { FormWrapper, RedBox, SubmitButton, WhiteBox } from './styles';
+import { initialUrl } from '../../shared/constants/AppConstants';
 
 export default function LoginPage() {
   const [emailInput, setEmailInput] = useState<string>('');
@@ -25,11 +26,6 @@ export default function LoginPage() {
   const { width } = useWindowDimensions();
   const navigate = useNavigate();
   const { login } = useAuth();
-
-  function clearInputs() {
-    setEmailInput('');
-    setPasswordInput('');
-  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -49,9 +45,8 @@ export default function LoginPage() {
 
     try {
       await login(userEntry, () => {
-        navigate('/home', { replace: true });
+        navigate(initialUrl, { replace: true });
       });
-      clearInputs();
       toast.success('Login realizado com sucesso');
     } catch (e: any) {
       toast.error(e.message);

@@ -6,8 +6,8 @@ import {
   UploadInner,
 } from './styles';
 import { AiOutlineCloudDownload } from 'react-icons/ai';
-import theme from '../../../../global/theme';
-import { AdminButtonComponent } from '../../../../components';
+import theme from '../../../../../../global/theme';
+import { AdminButtonComponent } from '../../../../../../components';
 import toast from 'react-hot-toast';
 
 interface ImageUploadComponentProps {

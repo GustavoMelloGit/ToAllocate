@@ -14,9 +14,21 @@ const GlobalStyle = createGlobalStyle`
         }
         button{
             cursor: pointer;
+            border: none;
+            background: none;
             :hover{
                 opacity: 0.7;
             }
+        }
+        .pointer {
+            cursor: pointer;
+        }
+        .centered {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
     html{
