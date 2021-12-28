@@ -24,7 +24,7 @@ export default function ProjectDetail(): JSX.Element {
     const getDataById = async () => {
       try {
         const response = await api.get(`/project/${uuid}`);
-        console.log(response.data);
+
         setProject(response.data);
       } catch (e) {
         console.log(e);

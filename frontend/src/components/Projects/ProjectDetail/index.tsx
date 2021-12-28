@@ -1,6 +1,9 @@
 import { LoadingComponent } from '../..';
 import { IProjectModel } from '../../../models/project/ProjectModel';
-import { formatDate } from '../../../shared/helpers/formatters';
+import {
+  formatDate,
+  formatRealCurrency,
+} from '../../../shared/helpers/formatters';
 import CarouselComponent from './components/Carousel';
 import EmployeeItem from './components/Employee/EmployeeItem';
 import {
@@ -34,6 +37,7 @@ export default function ProjectDetailComponent(
           <ContentHeaderWrapper>
             <h1>{project.project_name}</h1>
             <span>Prazo: {formatDate(project.end_date)}</span>
+            <span>Valor: {formatRealCurrency(project.cost)}</span>
           </ContentHeaderWrapper>
           <p>w{project.description}</p>
         </ProjectDetail>

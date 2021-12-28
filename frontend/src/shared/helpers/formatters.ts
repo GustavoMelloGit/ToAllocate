@@ -13,3 +13,10 @@ export const formatDate = (timestamp: string) => {
     -2
   )}/${date.getFullYear()}`;
 };
+
+export const formatRealCurrency = (value: number) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(value);
+};
