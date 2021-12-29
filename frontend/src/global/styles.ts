@@ -30,6 +30,22 @@ const GlobalStyle = createGlobalStyle`
             justify-content: center;
             align-items: center;
         }
+        ::-webkit-scrollbar{
+            width: 13px;
+            height: 13px;
+        }
+        ::-webkit-scrollbar-thumb{
+            background: #B3AFB3;
+            border-radius: 9px;
+        }
+        ::-webkit-scrollbar-thumb:hover{
+            background: #B3AFB3;
+        }
+        ::-webkit-scrollbar-track{
+            background: #FFFFFF;
+            border-radius: 9px;
+            box-shadow: inset 0px 0px 0px 0px #F0F0F0;
+        }
     }
     html{
         font-size: 62.5%;

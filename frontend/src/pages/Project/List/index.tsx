@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { AdminButtonComponent, AppLayoutComponent } from '../../../components';
 import NotFoundComponent from '../../../components/utils/NotFound';
-import theme from '../../../global/theme';
 import useAuth from '../../../hooks/useAuth';
-// import { DUMMY_PROJECTS } from '../../../mocks/projects';
 import { IProjectModel } from '../../../models/project/ProjectModel';
 import api from '../../../services/api';
 import { AdminActionWrapper } from '../../styles';
 import ProjectItem from './components/ProjectItem';
+import SearchInput from './components/SearchInput';
 import { ProjectsListContainer } from './styles';
 
 const ProjectsList: React.FC = (props) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<IProjectModel[]>([]);
+  const [searchData, setSearchData] = useState('');
 
   const handleCreateProject = () => {
     navigate('/projects/create-project');
@@ -44,25 +43,25 @@ const ProjectsList: React.FC = (props) => {
             <AdminButtonComponent onClick={handleCreateProject}>
               Criar
             </AdminButtonComponent>
-            <button>
-              <BiSearchAlt
-                size={30}
-                color={theme.colors.accent}
-                className='pointer'
-              />
-            </button>
+            <SearchInput onChange={setSearchData} value={searchData} />
           </AdminActionWrapper>
         )}
         {projects.length > 0 ? (
           <ul>
-            {projects.map((project, index) => (
-              <ProjectItem
-                key={project.project_id}
-                project={project}
-                isReverse={index % 2 === 0}
-                onClick={handleItemClick.bind(null, project.project_id)}
-              />
-            ))}
+            {projects
+              .filter((project) =>
+                project.project_name
+                  .toLowerCase()
+                  .includes(searchData.toLowerCase())
+              )
+              .map((project, index) => (
+                <ProjectItem
+                  key={project.project_id}
+                  project={project}
+                  isReverse={index % 2 === 0}
+                  onClick={handleItemClick.bind(null, project.project_id)}
+                />
+              ))}
           </ul>
         ) : (
           <NotFoundComponent message='Nenhum projeto encontrado' />
