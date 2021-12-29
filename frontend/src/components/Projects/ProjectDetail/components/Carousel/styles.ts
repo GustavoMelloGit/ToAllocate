@@ -30,3 +30,7 @@ export const CarouselWrapper = styled.div`
     width: 100%;
   }
 `;
+
+export const CustomImage = styled.img`
+  max-width: 70%;
+`;

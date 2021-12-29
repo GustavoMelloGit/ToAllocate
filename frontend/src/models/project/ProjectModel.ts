@@ -1,6 +1,7 @@
 export interface IProjectEmployeeModel {
   name: string;
-  occupation: string;
+  ocuppation: string;
+  employee_cpf: string;
 }
 export interface IProjectModel {
   project_id: string;

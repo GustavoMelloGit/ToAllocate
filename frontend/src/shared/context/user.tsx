@@ -2,7 +2,7 @@ import { createContext, useState } from 'react';
 import { ILoginAuthenticationForm } from '../../models/authentication/form';
 import { IEmployeeModel } from '../../models/user/employee';
 import { decode } from 'jsonwebtoken';
-import api from '../../services/api';
+import api, { setAuthToken } from '../../services/api';
 
 interface IAuthContext {
   user: IEmployeeModel | undefined;
@@ -27,6 +27,7 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@toAllocate:token');
     if (token) {
+      setAuthToken(token);
       const user = decode(token) as IEmployeeModel;
       return { user, token };
     }
@@ -45,7 +46,7 @@ const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
       const user: IEmployeeModel = decode(token) as IEmployeeModel;
       if (user) {
         setData({
-          user: { ...user, role: 'admin' },
+          user: { ...user, role: user.role },
           token: token,
         });
         localStorage.setItem('@toAllocate:token', token);

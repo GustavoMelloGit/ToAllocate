@@ -12,6 +12,7 @@ export const EmployeeInfo = styled.div`
   flex-direction: column;
   align-items: flex-start;
   font-size: 1.6rem;
+  text-transform: capitalize;
   h1 {
     margin: 0;
   }

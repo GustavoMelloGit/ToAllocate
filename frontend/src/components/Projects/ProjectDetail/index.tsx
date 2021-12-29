@@ -39,7 +39,7 @@ export default function ProjectDetailComponent(
             <span>Prazo: {formatDate(project.end_date)}</span>
             <span>Valor: {formatRealCurrency(project.cost)}</span>
           </ContentHeaderWrapper>
-          <p>w{project.description}</p>
+          <p>{project.description}</p>
         </ProjectDetail>
         <EmployeesWrapper>
           {project.employees.map((employee) => (

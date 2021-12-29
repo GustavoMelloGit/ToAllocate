@@ -12,8 +12,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { IProjectModel } from '../../../models/project/ProjectModel';
 import { useEffect, useState } from 'react';
 import api from '../../../services/api';
+import toast from 'react-hot-toast';
 
-export default function ProjectDetail(): JSX.Element {
+export default function ProjectDetailPage(): JSX.Element {
   const [project, setProject] = useState<IProjectModel>({} as IProjectModel);
   const auth = useAuth();
   const navigate = useNavigate();
@@ -37,6 +38,19 @@ export default function ProjectDetail(): JSX.Element {
     navigate(-1);
   };
 
+  const handleDeleteProject = () => {
+    try {
+      api.delete(`/delete-project/${uuid}`);
+      navigate(-1);
+    } catch (e: any) {
+      toast.error(e.message);
+    }
+  };
+
+  const handleEditProject = () => {
+    navigate(`/project/${uuid}/edit`);
+  };
+
   return (
     <AppLayoutComponent>
       <HomeContainer>
@@ -46,7 +60,12 @@ export default function ProjectDetail(): JSX.Element {
           </ButtonComponent>
           {user?.role === 'admin' && (
             <AdminActionWrapper>
-              <AdminButtonComponent>Editar</AdminButtonComponent>
+              <AdminButtonComponent onClick={handleEditProject}>
+                Editar
+              </AdminButtonComponent>
+              <AdminButtonComponent onClick={handleDeleteProject}>
+                Excluir
+              </AdminButtonComponent>
             </AdminActionWrapper>
           )}
         </ActionButtonsWrapper>

@@ -6,7 +6,7 @@ interface IMyTextAreaProps
   onChangeText?: (text: string) => void;
 }
 const MyTextArea: React.FC<IMyTextAreaProps> = (props) => {
-  const { children } = props;
+  const { children, ...rest } = props;
   const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (props.onChangeText) {
       props.onChangeText(e.target.value);
@@ -15,7 +15,11 @@ const MyTextArea: React.FC<IMyTextAreaProps> = (props) => {
   return (
     <Container>
       <InputLabel htmlFor='DescriptionTextArea'>{children}</InputLabel>
-      <TextArea onChange={handleChangeText} id='DescriptionTextArea' />
+      <TextArea
+        onChange={handleChangeText}
+        id='DescriptionTextArea'
+        {...rest}
+      />
     </Container>
   );
 };

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../../global/theme';
 
-export const LoadingWrapper = styled.div`
+export const LoadingWrapper = styled.div<{ color?: string }>`
   color: #ffffff;
   text-indent: -9999em;
   margin: 88px auto;
@@ -12,7 +12,7 @@ export const LoadingWrapper = styled.div`
   transform: translateZ(0);
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
-  background: ${theme.colors.primary};
+  background: ${(props) => props.color || theme.colors.primary};
   -webkit-animation: load1 1s infinite ease-in-out;
   animation: load1 1s infinite ease-in-out;
   width: 1em;
@@ -23,7 +23,7 @@ export const LoadingWrapper = styled.div`
     position: absolute;
     top: 0;
     content: '';
-    background: ${theme.colors.primary};
+    background: ${(props) => props.color || theme.colors.primary};
     -webkit-animation: load1 1s infinite ease-in-out;
     animation: load1 1s infinite ease-in-out;
     width: 1em;
