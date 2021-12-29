@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel, CarouselResponsiveOptions } from 'primereact/carousel';
-import { CarouselWrapper, ContentWrapper } from './styles';
+import { CarouselWrapper, ContentWrapper, CustomImage } from './styles';
 import Breakpoints from '../../../../../shared/constants/Breakpoints';
 
 const ItemTemplate: React.FC<any> = (props) => {
@@ -20,6 +20,7 @@ const CarouselComponent: React.FC<ICarouselComponent> = (
   props
 ): JSX.Element => {
   const { images, style } = props;
+
   const responsiveOptions: CarouselResponsiveOptions[] = [
     {
       breakpoint: `${Breakpoints.xl}px`,
@@ -32,6 +33,10 @@ const CarouselComponent: React.FC<ICarouselComponent> = (
       numScroll: 1,
     },
   ];
+
+  if (images.length === 1) {
+    return <CustomImage src={images[0]} alt={images[0]} />;
+  }
 
   return (
     <CarouselWrapper>

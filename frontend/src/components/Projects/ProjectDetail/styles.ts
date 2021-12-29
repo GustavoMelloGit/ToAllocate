@@ -55,6 +55,7 @@ export const ProjectDetail = styled.div`
 
   p {
     font-size: 1.6rem;
+    text-align: right;
   }
 `;
 export const EmployeesWrapper = styled.div``;

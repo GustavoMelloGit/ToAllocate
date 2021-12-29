@@ -35,14 +35,17 @@ const ImageUploadComponent: React.FC<ImageUploadComponentProps> = (props) => {
   };
 
   if (images && Object.keys(images).length > 0) {
+    let image;
+
+    if (typeof images[0] === 'string') {
+      image = images[0];
+    } else {
+      image = URL.createObjectURL(images[0]);
+    }
     return (
       <ImageUploadedContainer>
         <UploadContainer>
-          {typeof images === 'object' ? (
-            <img src={images[0]} alt='Imagem' />
-          ) : (
-            <img src={imageBlob} alt={images[0].name} />
-          )}
+          <img src={image} alt={images} />
         </UploadContainer>
         <span>Selecionadas: {images.length}</span>
         <AdminButtonComponent disabled={disabled} onClick={handleClearImages}>
