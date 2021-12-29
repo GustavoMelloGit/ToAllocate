@@ -11,11 +11,12 @@ import { AdminButtonComponent } from '../../../../../../components';
 import toast from 'react-hot-toast';
 
 interface ImageUploadComponentProps {
-  images?: FileList;
-  setImages: React.Dispatch<React.SetStateAction<FileList | undefined>>;
+  images?: any;
+  setImages: React.Dispatch<React.SetStateAction<any>>;
+  disabled?: boolean;
 }
 const ImageUploadComponent: React.FC<ImageUploadComponentProps> = (props) => {
-  const { images, setImages } = props;
+  const { images, setImages, disabled } = props;
   const [imageBlob, setImageBlob] = useState<string>();
 
   const handleAddImage = (imageList: FileList | null) => {
@@ -37,10 +38,14 @@ const ImageUploadComponent: React.FC<ImageUploadComponentProps> = (props) => {
     return (
       <ImageUploadedContainer>
         <UploadContainer>
-          <img src={imageBlob} alt={images[0].name} />
+          {typeof images === 'object' ? (
+            <img src={images[0]} alt='Imagem' />
+          ) : (
+            <img src={imageBlob} alt={images[0].name} />
+          )}
         </UploadContainer>
         <span>Selecionadas: {images.length}</span>
-        <AdminButtonComponent onClick={handleClearImages}>
+        <AdminButtonComponent disabled={disabled} onClick={handleClearImages}>
           Remover fotos
         </AdminButtonComponent>
       </ImageUploadedContainer>

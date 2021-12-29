@@ -7,6 +7,7 @@ import { AppLayoutComponent, LoadingComponent } from '../../../components';
 import { useEffect, useState } from 'react';
 import { IEmployeeModel } from '../../../models/user/employee';
 import { useNavigate } from 'react-router-dom';
+import theme from '../../../global/theme';
 
 const initialValues: IProjectFormValues = {
   id: '',
@@ -17,6 +18,7 @@ const initialValues: IProjectFormValues = {
   cost: 0,
   manager: '',
   images: {} as FileList,
+  employees: [],
 };
 
 const CreateProject: React.FC = () => {
@@ -49,6 +51,9 @@ const CreateProject: React.FC = () => {
     for (let i = 0; i < images.length; i++) {
       formData.append('file', images[i]);
     }
+    for (let i = 0; i < props.employees.length; i++) {
+      formData.append('employees', props.employees[i]);
+    }
 
     try {
       await api.post('/create-project', formData);
@@ -63,7 +68,7 @@ const CreateProject: React.FC = () => {
   if (loading && employees.length === 0) {
     return (
       <AppLayoutComponent>
-        <LoadingComponent />
+        <LoadingComponent color={theme.colors.accent} />
       </AppLayoutComponent>
     );
   }

@@ -1,5 +1,11 @@
 import { LoadingWrapper } from './styles';
 
-export default function LoadingComponent(): JSX.Element {
-  return <LoadingWrapper />;
+interface ILoadingComponentProps {
+  color?: string;
+}
+export default function LoadingComponent(
+  props: ILoadingComponentProps
+): JSX.Element {
+  const { color } = props;
+  return <LoadingWrapper color={color} />;
 }
