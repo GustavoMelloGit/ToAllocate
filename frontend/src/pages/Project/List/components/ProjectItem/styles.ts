@@ -21,7 +21,7 @@ export const ContentWrapper = styled.div`
   margin: 3rem 0;
   cursor: pointer;
   h3 {
-    font-size: 4rem;
+    font-size: 5rem;
     margin: 0;
   }
   p {

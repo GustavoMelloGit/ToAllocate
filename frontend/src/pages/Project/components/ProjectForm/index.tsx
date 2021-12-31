@@ -124,7 +124,7 @@ const ProjectForm: React.FC<IProjectFormProps> = (props) => {
             value={manager}
           />
           <MySelect
-            employees={employees}
+            employees={employees.filter((e) => e.cpf !== manager)}
             label='Funcionários*'
             setValue={handleAddEmployee}
             value={selectedEmployees}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import {
   FileInput,
   ImageUploadedContainer,
@@ -17,7 +17,6 @@ interface ImageUploadComponentProps {
 }
 const ImageUploadComponent: React.FC<ImageUploadComponentProps> = (props) => {
   const { images, setImages, disabled } = props;
-  const [imageBlob, setImageBlob] = useState<string>();
 
   const handleAddImage = (imageList: FileList | null) => {
     if (imageList) {
@@ -26,7 +25,6 @@ const ImageUploadComponent: React.FC<ImageUploadComponentProps> = (props) => {
         return;
       }
       setImages(imageList);
-      setImageBlob(URL.createObjectURL(imageList[0]));
     }
   };
 
