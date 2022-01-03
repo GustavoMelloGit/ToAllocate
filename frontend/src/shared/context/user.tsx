@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { ILoginAuthenticationForm } from '../../models/authentication/form';
 import { IEmployeeModel } from '../../models/user/employee';
 import { decode } from 'jsonwebtoken';
@@ -24,8 +24,13 @@ interface AuthState {
 export const userContext = createContext<IAuthContext>({} as IAuthContext);
 
 const UserContextProvider: React.FC<UserContextProps> = ({ children }) => {
+  const token = localStorage.getItem('@toAllocate:token');
+  useEffect(() => {
+    if (token) {
+      setAuthToken(token);
+    }
+  }, [token]);
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@toAllocate:token');
     if (token) {
       setAuthToken(token);
       const user = decode(token) as IEmployeeModel;
