@@ -2,5 +2,3 @@ node_modules
 .env
 tmp/*
 !tmp/.gitkeep
-
-fake_data.ts
